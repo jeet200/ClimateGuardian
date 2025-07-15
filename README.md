@@ -1,6 +1,6 @@
 # Live Webiste 
 
-[Click here to Visit the webiste live]([https://climate-guardian-b2p21t3ln-jeet200s-projects.vercel.app/](https://climate-guardian01-git-main-jeet200s-projects.vercel.app/))
+[Click here to Visit the webiste live](https://climate-guardian01-git-main-jeet200s-projects.vercel.app/)
 
 #  Project Preview
 
