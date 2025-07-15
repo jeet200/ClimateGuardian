@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌱 ClimateGuardian - Reduce Your Carbon Footprint</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <h1>🌱 ClimateGuardian</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#calculator" class="nav-link">Calculator</a></li>
+                    <li><a href="#chat" class="nav-link">AI Chat</a></li>
+                    <li><a href="#progress" class="nav-link">Progress</a></li>
+                    <li><a href="#tips" class="nav-link">Daily Tips</a></li>
+                    <li><a href="#developer" class="nav-link">Developer</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h2>Take Action Against Climate Change</h2>
+                    <p>Understand your carbon footprint and take meaningful steps to reduce it with personalized AI guidance.</p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <i class="fas fa-thermometer-half"></i>
+                            <span>Global temp increased by 1.1°C</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-smog"></i>
+                            <span>CO₂ levels at 421 ppm</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-clock"></i>
+                            <span>Every second counts</span>
+                        </div>
+                    </div>
+                    <button class="cta-button" onclick="showPage('calculator')">
+                        Calculate My Footprint
+                    </button>
+                </div>
+                <div class="hero-image">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-calculator"></i>
+                        <h3>Carbon Calculator</h3>
+                        <p>Calculate your monthly CO₂ emissions from transport, energy, diet, and consumption.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-robot"></i>
+                        <h3>AI Assistant</h3>
+                        <p>Get personalized climate advice from our AI-powered ClimateBot.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Progress Tracking</h3>
+                        <p>Monitor your carbon footprint reduction over time with visual progress tracking.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-tasks"></i>
+                        <h3>Daily Actions</h3>
+                        <p>Complete simple daily eco-actions to build sustainable habits.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculator Page -->
+        <section id="calculator" class="page">
+            <div class="container">
+                <h2>🧮 Carbon Footprint Calculator</h2>
+                <p class="subtitle">Calculate your monthly CO₂ emissions</p>
+                
+                <form id="carbon-form" class="calculator-form">
+                    <div class="form-section">
+                        <h3><i class="fas fa-car"></i> Transportation</h3>
+                        <div class="form-group">
+                            <label>Primary transport method:</label>
+                            <select id="transport-type" required>
+                                <option value="car">Car</option>
+                                <option value="public">Public Transport</option>
+                                <option value="bike">Bicycle</option>
+                                <option value="walk">Walking</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Weekly kilometers traveled:</label>
+                            <input type="number" id="weekly-km" min="0" placeholder="e.g., 100" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3><i class="fas fa-bolt"></i> Energy Usage</h3>
+                        <div class="form-group">
+                            <label>Monthly electricity usage (kWh):</label>
+                            <input type="number" id="electricity" min="0" placeholder="e.g., 250" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Monthly gas usage (m³):</label>
+                            <input type="number" id="gas" min="0" placeholder="e.g., 50" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3><i class="fas fa-utensils"></i> Diet</h3>
+                        <div class="form-group">
+                            <label>Dietary preference:</label>
+                            <select id="diet-type" required>
+                                <option value="vegan">Vegan</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="mixed">Mixed (some meat)</option>
+                                <option value="meat_heavy">Meat-heavy</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3><i class="fas fa-shopping-cart"></i> Consumption</h3>
+                        <div class="form-group">
+                            <label>Shopping/consumption level:</label>
+                            <select id="consumption-level" required>
+                                <option value="low">Low (minimal shopping)</option>
+                                <option value="moderate">Moderate (regular shopping)</option>
+                                <option value="high">High (frequent shopping)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="calculate-btn">Calculate My Footprint</button>
+                </form>
+
+                <div id="results" class="results hidden">
+                    <h3>Your Carbon Footprint Results</h3>
+                    <div class="results-grid">
+                        <div class="result-card primary">
+                            <h4>Monthly Footprint</h4>
+                            <span id="monthly-result">-- kg CO₂</span>
+                        </div>
+                        <div class="result-card">
+                            <h4>Annual Footprint</h4>
+                            <span id="annual-result">-- kg CO₂</span>
+                        </div>
+                    </div>
+                    <div class="breakdown">
+                        <h4>Breakdown by Category</h4>
+                        <div class="breakdown-grid">
+                            <div class="breakdown-item">
+                                <span>Transport</span>
+                                <span id="transport-breakdown">-- kg</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Energy</span>
+                                <span id="energy-breakdown">-- kg</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Diet</span>
+                                <span id="diet-breakdown">-- kg</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Consumption</span>
+                                <span id="consumption-breakdown">-- kg</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button onclick="showPage('chat')" class="action-btn">Get AI Advice</button>
+                        <button onclick="showPage('tips')" class="action-btn">See Daily Tips</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Page -->
+        <section id="chat" class="page">
+            <div class="container">
+                <h2>🤖 ClimateBot - AI Assistant</h2>
+                <p class="subtitle">Ask me anything about reducing your carbon footprint!</p>
+                
+                <div class="chat-container">
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="message bot">
+                            <div class="message-content">
+                                <p>Hello! I'm ClimateBot, your AI assistant for sustainable living. Ask me anything about reducing your carbon footprint, saving energy, or living more sustainably!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" id="chat-input" placeholder="Ask me about climate-friendly practices..." maxlength="500">
+                        <button id="send-btn" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="quick-questions">
+                    <h4>Quick Questions:</h4>
+                    <div class="question-buttons">
+                        <button onclick="askQuickQuestion('How can I reduce my electricity bill?')">💡 Reduce Electricity</button>
+                        <button onclick="askQuickQuestion('What\'s the greenest way to commute?')">🚲 Green Commute</button>
+                        <button onclick="askQuickQuestion('How does eating meat affect the environment?')">🥩 Diet Impact</button>
+                        <button onclick="askQuickQuestion('How can I reduce food waste?')">🍎 Food Waste</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Page -->
+        <section id="progress" class="page">
+            <div class="container">
+                <h2>📊 Your Progress</h2>
+                <p class="subtitle">Track your carbon footprint reduction over time</p>
+                
+                <div class="progress-grid">
+                    <div class="progress-card">
+                        <h3>Monthly Footprint</h3>
+                        <canvas id="footprint-chart"></canvas>
+                    </div>
+                    <div class="progress-card">
+                        <h3>Achievements</h3>
+                        <div id="achievements" class="achievements">
+                            <div class="achievement">
+                                <i class="fas fa-seedling"></i>
+                                <span>First Calculation</span>
+                            </div>
+                            <div class="achievement locked">
+                                <i class="fas fa-star"></i>
+                                <span>Week Streak</span>
+                            </div>
+                            <div class="achievement locked">
+                                <i class="fas fa-trophy"></i>
+                                <span>Month Streak</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="climate-info">
+                    <h3>🌍 Local Climate Data</h3>
+                    <div id="climate-data" class="climate-grid">
+                        <div class="climate-item">
+                            <span>Loading climate data...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips Page -->
+        <section id="tips" class="page">
+            <div class="container">
+                <h2>✅ Daily Eco-Actions</h2>
+                <p class="subtitle">Complete simple actions to reduce your carbon footprint</p>
+                
+                <div class="tips-header">
+                    <div class="streak-counter">
+                        <i class="fas fa-fire"></i>
+                        <span>Daily Streak: <span id="streak-count">0</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div id="daily-actions" class="actions-list">
+                    <div class="loading">Loading today's actions...</div>
+                </div>
+                
+                <div class="tips-summary">
+                    <h3>💡 Why These Actions Matter</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <i class="fas fa-plug"></i>
+                            <h4>Energy Savings</h4>
+                            <p>Simple changes in energy usage can reduce your carbon footprint by 20-30%.</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-leaf"></i>
+                            <h4>Sustainable Living</h4>
+                            <p>Small daily actions compound into significant environmental impact over time.</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-recycle"></i>
+                            <h4>Waste Reduction</h4>
+                            <p>Reducing consumption and waste can cut your footprint by up to 40%.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Developer Info Section -->
+        <section id="developer" class="page">
+            <div class="container">
+                <h2>👨‍💻 Meet the Developer</h2>
+                <p class="subtitle">Built with passion for a sustainable future</p>
+                
+                <div class="developer-card">
+                    <div class="developer-content">
+                        <div class="developer-avatar">
+                            <img src="developer-photo.jpg" alt="Jeet Upadhyay - Developer" class="developer-photo">
+                        </div>
+                        <div class="developer-info">
+                            <h3 class="developer-name">Jeet Upadhyay</h3>
+                            <p class="developer-title">Full Stack Developer</p>
+                            <p class="developer-description">
+                                Passionate about creating innovative solutions that combine technology with environmental sustainability. 
+                                This ClimateGuardian platform represents the fusion of cutting-edge web development and climate consciousness.
+                            </p>
+                            
+                            <div class="developer-links">
+                                <a href="https://github.com/jeet200" target="_blank" rel="noopener noreferrer" class="dev-link github">
+                                    <i class="fab fa-github"></i>
+                                    <span>GitHub</span>
+                                </a>
+                                <a href="https://www.linkedin.com/in/jeet-upadhyay-a0385523a/" target="_blank" rel="noopener noreferrer" class="dev-link linkedin">
+                                    <i class="fab fa-linkedin"></i>
+                                    <span>LinkedIn</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="developer-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-code"></i>
+                            <span>Full Stack Development</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-leaf"></i>
+                            <span>Environmental Tech</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-rocket"></i>
+                            <span>Innovation Focused</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <h3>🛠️ Tech Stack Used</h3>
+                    <div class="tech-grid">
+                        <div class="tech-item">
+                            <i class="fab fa-html5"></i>
+                            <span>HTML5</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-css3-alt"></i>
+                            <span>CSS3</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-js"></i>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-node-js"></i>
+                            <span>Node.js</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-brain"></i>
+                            <span>Gemini AI</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Chart.js</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 ClimateGuardian. Together for a sustainable future. 🌱</p>
+            <p class="developer-credit">
+                Developed with 💚 by <a href="#developer" class="dev-credit-link">Jeet Upadhyay</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
