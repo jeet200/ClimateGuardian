@@ -5,6 +5,7 @@ A stunning, futuristic web platform that helps users understand and reduce their
 ## ✨ Features
 
 ### 🧮 Carbon Footprint Calculator
+
 - Calculate monthly CO₂ emissions from:
   - Transportation (car, bike, public transport, walking)
   - Energy usage (electricity, gas)
@@ -14,6 +15,7 @@ A stunning, futuristic web platform that helps users understand and reduce their
 - Track progress over time
 
 ### 🤖 AI Chat Assistant (ClimateBot)
+
 - Get personalized climate advice using Google Gemini 1.5 Flash
 - Ask questions about:
   - Energy saving tips
@@ -23,18 +25,21 @@ A stunning, futuristic web platform that helps users understand and reduce their
 - Quick question buttons for common queries
 
 ### 📊 Progress Tracker
+
 - Visual dashboard with carbon footprint trends
 - Achievement badges for milestones
 - Progress charts using Chart.js
 - Streak counter for consistency
 
 ### ✅ Daily Eco-Actions
+
 - 3 daily climate-friendly actions
 - Interactive completion tracking
 - Progress bar and streak system
 - Celebration animations for completed actions
 
 ### 🌍 Local Climate Data
+
 - Real-time local weather information
 - Air quality index
 - Temperature anomaly tracking
@@ -53,6 +58,7 @@ A stunning, futuristic web platform that helps users understand and reduce their
 ## 🎨 Design Features
 
 ### Futuristic UI Elements
+
 - **Dark Theme**: Cyberpunk-inspired dark background with animated gradients
 - **Glassmorphism**: Translucent cards with backdrop blur effects
 - **Glowing Effects**: Neon-style text and button animations
@@ -60,6 +66,7 @@ A stunning, futuristic web platform that helps users understand and reduce their
 - **Interactive Elements**: Glowing buttons, animated particles, and responsive feedback
 
 ### Color Scheme
+
 - **Primary**: Electric cyan (#00f5ff) with glowing effects
 - **Secondary**: Deep blue gradients (#0099ff, #00d4ff)
 - **Background**: Animated dark gradient with particle effects
@@ -68,6 +75,7 @@ A stunning, futuristic web platform that helps users understand and reduce their
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Vercel account (for deployment)
 - Google Gemini API key (optional)
 - OpenWeatherMap API key (optional)
@@ -75,23 +83,27 @@ A stunning, futuristic web platform that helps users understand and reduce their
 ### Local Development
 
 1. **Clone or download the project**
+
    ```bash
    cd ClimateGuardian
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
    Create a `.env` file in the root directory:
+
    ```env
    GEMINI_API_KEY=your_gemini_api_key_here
    OPENWEATHER_API_KEY=your_openweathermap_api_key_here
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -99,45 +111,10 @@ A stunning, futuristic web platform that helps users understand and reduce their
 5. **Open in browser**
    Navigate to `http://localhost:3000`
 
-### 🌐 Vercel Deployment
-
-**Ready for Vercel!** This project is pre-configured for Vercel deployment:
-
-1. **Push to GitHub**
-2. **Connect to Vercel**
-3. **Add environment variables**
-4. **Deploy automatically**
-
-See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
-
-### API Keys Setup
-
-#### Google Gemini API Key
-1. Visit [Google AI Studio](https://aistudio.google.com/)
-2. Create an account or sign in with Google
-3. Navigate to API Keys section
-4. Create a new API key
-5. Add to `.env` file as `GEMINI_API_KEY`
-
-#### OpenWeatherMap API Key
-1. Visit [OpenWeatherMap](https://openweathermap.org/api)
-2. Sign up for a free account
-3. Generate an API key
-4. Add to `.env` file as `OPENWEATHER_API_KEY`
-
-**Note**: The application will work with limited functionality without these API keys.
-
-**Setting up your .env file:**
-Create a `.env` file in the root directory and add your Gemini API key:
-```env
-GEMINI_API_KEY=your_actual_gemini_api_key_here
-OPENWEATHER_API_KEY=your_actual_openweather_api_key_here
-PORT=3000
-```
-
 ## 📱 Usage
 
 ### Carbon Footprint Calculator
+
 1. Navigate to the Calculator page
 2. Fill in your lifestyle data:
    - Transportation method and weekly distance
@@ -148,18 +125,21 @@ PORT=3000
 4. View detailed results and breakdown
 
 ### AI Chat Assistant
+
 1. Go to the AI Chat page
 2. Type your question about climate/sustainability
 3. Use quick question buttons for common queries
 4. Get personalized advice and tips
 
 ### Daily Actions
+
 1. Visit the Daily Tips page
 2. View 3 daily eco-actions
 3. Click checkboxes to mark actions as completed
 4. Track your streak and progress
 
 ### Progress Tracking
+
 1. Access the Progress page
 2. View your carbon footprint trends
 3. Check achievement badges
@@ -177,6 +157,7 @@ PORT=3000
 ## 🔧 Development
 
 ### Project Structure
+
 ```
 ClimateGuardian/
 ├── public/
@@ -189,17 +170,21 @@ ClimateGuardian/
 ```
 
 ### Available Scripts
+
 - `npm start` - Start production server
 - `npm run dev` - Start development server with nodemon
 
 ### Carbon Calculation Factors
+
 The application uses scientifically-based carbon factors:
+
 - **Transport**: 0.21 kg CO₂/km (car), 0.08 kg CO₂/km (public)
 - **Energy**: 0.5 kg CO₂/kWh (electricity), 2.0 kg CO₂/m³ (gas)
 - **Diet**: 1.5-7.3 kg CO₂/day based on diet type
 - **Consumption**: 0.5-3.0 kg CO₂/day based on shopping habits
 
 ### API Endpoints
+
 - `POST /api/calculate-footprint` - Calculate carbon footprint
 - `POST /api/chat` - AI chat assistant
 - `GET /api/daily-actions` - Get daily eco-actions
@@ -208,6 +193,7 @@ The application uses scientifically-based carbon factors:
 ## 🌟 Features Breakdown
 
 ### Implemented (MVP)
+
 - ✅ Carbon footprint calculator
 - ✅ AI-powered chat assistant
 - ✅ Daily eco-actions with tracking
@@ -218,6 +204,7 @@ The application uses scientifically-based carbon factors:
 - ✅ Achievement system
 
 ### Future Enhancements
+
 - 🔄 User authentication system
 - 🔄 Social features and leaderboards
 - 🔄 More detailed carbon calculations
@@ -255,6 +242,7 @@ MIT License - Feel free to use and modify for your projects.
 ## 🆘 Support
 
 If you encounter any issues:
+
 1. Check that all dependencies are installed
 2. Verify API keys are correctly configured
 3. Ensure Node.js version is 14 or higher
@@ -264,4 +252,4 @@ If you encounter any issues:
 
 **Together for a sustainable future! 🌱**
 
-Made with ❤️ for the planet and future generations. 
+Made with ❤️ for the planet and future generations.
