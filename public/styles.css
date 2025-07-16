@@ -520,9 +520,13 @@ body::before {
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border-left: 4px solid #4a7c59;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid #00f5ff;
+    color: #e0e0e0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
 }
 
 .actions {
@@ -640,10 +644,12 @@ body::before {
 }
 
 .quick-questions {
-    background: white;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
 }
 
 .question-buttons {
@@ -655,8 +661,10 @@ body::before {
 
 .question-buttons button {
     padding: 0.75rem 1rem;
-    border: 2px solid #e0f2fe;
-    background: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    color: #e0e0e0;
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -664,8 +672,10 @@ body::before {
 }
 
 .question-buttons button:hover {
-    background: #e0f2fe;
-    border-color: #4a7c59;
+    background: rgba(0, 245, 255, 0.1);
+    border-color: rgba(0, 245, 255, 0.4);
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);
+    color: #00f5ff;
 }
 
 /* Progress Page */
@@ -752,10 +762,12 @@ body::before {
 }
 
 .climate-info {
-    background: white;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
 }
 
 .climate-grid {
@@ -767,17 +779,23 @@ body::before {
 
 .climate-item {
     padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    border-radius: 12px;
     text-align: center;
+    transition: all 0.3s ease;
 }
 
 /* Tips Page */
 .tips-header {
-    background: white;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
     margin-bottom: 2rem;
 }
 
@@ -787,7 +805,8 @@ body::before {
     gap: 0.5rem;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #2d5a27;
+    color: #00f5ff;
+    text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
     margin-bottom: 1rem;
 }
 
@@ -805,15 +824,18 @@ body::before {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #4a7c59, #2d5a27);
+    background: linear-gradient(90deg, #00f5ff, #0099ff);
+    box-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
     transition: width 0.3s ease;
 }
 
 .actions-list {
-    background: white;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
     margin-bottom: 2rem;
 }
 
@@ -823,43 +845,52 @@ body::before {
     gap: 1rem;
     padding: 1rem;
     margin-bottom: 1rem;
-    border: 2px solid #e0f2fe;
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    border-radius: 12px;
     transition: all 0.3s ease;
 }
 
 .action-item:hover {
-    border-color: #4a7c59;
-    background: #f8fffe;
+    border-color: rgba(0, 245, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.1);
 }
 
 .action-item.completed {
-    background: #e8f5e8;
-    border-color: #4a7c59;
+    background: rgba(0, 245, 255, 0.1);
+    border-color: rgba(0, 245, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.2);
 }
 
 .action-checkbox {
     width: 20px;
     height: 20px;
-    border: 2px solid #4a7c59;
+    border: 2px solid #00f5ff;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    color: #00f5ff;
+    box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
 }
 
 .action-checkbox.checked {
-    background: #4a7c59;
-    color: white;
+    background: #00f5ff;
+    color: #000;
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
 }
 
 .tips-summary {
-    background: white;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
 }
 
 .tips-grid {
@@ -870,21 +901,27 @@ body::before {
 }
 
 .tip-card {
-    background: #f8f9fa;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid #00f5ff;
+    color: #e0e0e0;
     padding: 1.5rem;
-    border-radius: 10px;
+    border-radius: 15px;
     text-align: center;
-    border-left: 4px solid #4a7c59;
+    transition: all 0.3s ease;
 }
 
 .tip-card i {
     font-size: 2rem;
-    color: #4a7c59;
+    color: #00f5ff;
+    text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
     margin-bottom: 1rem;
 }
 
 .tip-card h4 {
-    color: #2d5a27;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     margin-bottom: 0.5rem;
 }
 
@@ -972,11 +1009,13 @@ footer p {
         left: -100%;
         top: 70px;
         flex-direction: column;
-        background: #2d5a27;
+        background: rgba(26, 26, 46, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 245, 255, 0.2);
         width: 100%;
         text-align: center;
         transition: 0.3s;
-        box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+        box-shadow: 0 10px 27px rgba(0, 245, 255, 0.2);
         padding: 2rem 0;
     }
 
@@ -1066,6 +1105,31 @@ footer p {
 
     .actions-list {
         padding: 1rem;
+    }
+    
+    /* Ensure dark theme consistency on mobile */
+    .tips-header, .actions-list, .tips-summary, .climate-info, .quick-questions {
+        background: rgba(255, 255, 255, 0.03) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .nav-link {
+        color: #e0e0e0 !important;
+        font-size: 1.1rem;
+        padding: 0.75rem 1.5rem;
+    }
+    
+    .nav-link:hover {
+        color: #00f5ff !important;
+        background: rgba(0, 245, 255, 0.15) !important;
+    }
+    
+    .nav-link.active {
+        color: #00f5ff !important;
+        background: rgba(0, 245, 255, 0.2) !important;
     }
 }
 
@@ -1206,11 +1270,11 @@ footer p {
 
 /* Additional Glass Cards */
 .tips-header, .actions-list, .tips-summary, .climate-info, .quick-questions {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
 }
 
 .tips-header h2, .actions-list h2, .tips-summary h3, .climate-info h3, .quick-questions h4 {
