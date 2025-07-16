@@ -487,13 +487,33 @@ function displayFootprintChart() {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'kg CO₂'
+                        text: 'kg CO₂',
+                        font: {
+                            size: 12
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: 10
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: {
+                            size: 10
+                        }
                     }
                 }
             },
             plugins: {
                 legend: {
                     display: false
+                }
+            },
+            elements: {
+                point: {
+                    radius: 4
                 }
             }
         }
