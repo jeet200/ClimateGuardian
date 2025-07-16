@@ -40,6 +40,9 @@ function setupEventListeners() {
     navMenu.classList.toggle("active");
   });
 
+  // Add mouse tracking for navigation links
+  setupMouseTracking();
+
   // Calculator form
   const carbonForm = document.getElementById("carbon-form");
   carbonForm.addEventListener("submit", handleCarbonCalculation);
@@ -100,6 +103,9 @@ function showPage(pageId) {
 
   // Close mobile menu
   document.querySelector(".nav-menu").classList.remove("active");
+  
+  // Re-initialize mouse tracking after navigation
+  setupMouseTracking();
 }
 
 // Carbon footprint calculation
@@ -708,6 +714,45 @@ function hideTooltip(e) {
     e.target.tooltip.remove();
     e.target.tooltip = null;
   }
+}
+
+// Mouse tracking for navigation links
+function setupMouseTracking() {
+  const navLinks = document.querySelectorAll(".nav-link");
+  
+  navLinks.forEach(link => {
+    link.addEventListener("mousemove", (e) => {
+      const rect = link.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      
+      link.style.setProperty("--mouse-x", `${x}%`);
+      link.style.setProperty("--mouse-y", `${y}%`);
+    });
+    
+    link.addEventListener("mouseleave", () => {
+      link.style.setProperty("--mouse-x", "50%");
+      link.style.setProperty("--mouse-y", "50%");
+    });
+    
+    // Add click ripple effect
+    link.addEventListener("click", (e) => {
+      const rect = link.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const ripple = document.createElement("span");
+      ripple.className = "click-ripple";
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      
+      link.appendChild(ripple);
+      
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    });
+  });
 }
 
 // Export functions for global access
