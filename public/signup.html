@@ -10,15 +10,34 @@
             max-width: 400px;
             margin: 50px auto;
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.1) 0%, rgba(0, 212, 255, 0.05) 50%, rgba(0, 153, 255, 0.1) 100%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .auth-form {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .form-group {
@@ -29,59 +48,142 @@
 
         .form-group label {
             font-weight: 600;
-            color: #2c5282;
+            color: #e0e0e0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         .form-group input {
             padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             font-size: 1rem;
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00f5ff;
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group input::placeholder {
+            color: #888;
         }
 
         .auth-btn {
-            background-color: #48bb78;
-            color: white;
-            padding: 0.75rem;
+            background: linear-gradient(135deg, #00f5ff 0%, #0099ff 50%, #00d4ff 100%);
+            color: #000;
+            padding: 1rem 2rem;
             border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .auth-btn:hover::before {
+            left: 100%;
         }
 
         .auth-btn:hover {
-            background-color: #38a169;
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(0, 245, 255, 0.6);
+            background: linear-gradient(135deg, #00d4ff 0%, #00f5ff 50%, #0099ff 100%);
         }
 
         .auth-link {
             text-align: center;
             margin-top: 1rem;
-            color: #4a5568;
+            color: #e0e0e0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         .auth-link a {
-            color: #48bb78;
+            color: #00f5ff;
             text-decoration: none;
             font-weight: 600;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
         }
 
         .auth-link a:hover {
-            text-decoration: underline;
+            color: #00d4ff;
+            text-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
         }
 
         .error-message {
-            color: #e53e3e;
+            color: #ff4d4d;
             text-align: center;
             margin-top: 1rem;
             display: none;
+            text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+            background: rgba(255, 77, 77, 0.1);
+            padding: 0.75rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 77, 77, 0.2);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .auth-container {
+                margin: 20px;
+                padding: 1.5rem;
+            }
+
+            .auth-btn {
+                padding: 0.75rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                max-width: 100%;
+                margin: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="auth-container">
-        <h2 style="text-align: center; color: #2c5282; margin-bottom: 2rem;">Join Climate Guardian</h2>
+        <h2 style="text-align: center; font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #ffffff 0%, #00f5ff 50%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 2rem; text-shadow: 0 0 40px rgba(0, 245, 255, 0.3);">Join Climate Guardian</h2>
         
         <form class="auth-form" id="signupForm">
             <div class="form-group">
@@ -146,7 +248,7 @@
                     // Store user data in localStorage
                     localStorage.setItem('user', JSON.stringify(data.user));
                     // Redirect to dashboard
-                    window.location.href = 'http://localhost:5000/';
+                    window.location.href = '/';
                 } else {
                     errorMessage.textContent = data.message || 'Signup failed';
                     errorMessage.style.display = 'block';
