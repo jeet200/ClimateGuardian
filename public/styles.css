@@ -1937,3 +1937,69 @@ footer p {
         font-size: 2rem;
     }
 } 
+
+/* Authentication Styles */
+.hidden {
+    display: none !important;
+}
+
+#auth-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#auth-links .nav-link {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+#login-link {
+    background-color: transparent;
+    border: 1px solid #48bb78;
+    color: #48bb78;
+}
+
+#login-link:hover {
+    background-color: #48bb78;
+    color: white;
+}
+
+#signup-link {
+    background-color: #48bb78;
+    color: white;
+}
+
+#signup-link:hover {
+    background-color: #38a169;
+}
+
+#logout-link {
+    color: #e53e3e;
+    border: 1px solid #e53e3e;
+}
+
+#logout-link:hover {
+    background-color: #e53e3e;
+    color: white;
+}
+
+#user-name {
+    color: #2c5282;
+    font-weight: 600;
+}
+
+/* Responsive styles for auth links */
+@media (max-width: 768px) {
+    #auth-links {
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    #auth-links .nav-link {
+        width: 100%;
+        text-align: center;
+    }
+} 

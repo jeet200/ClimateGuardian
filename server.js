@@ -1,16 +1,41 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
+const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require("dotenv").config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? process.env.FRONTEND_URL
+        : "http://localhost:5000",
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.static("public"));
+
+// Connect to MongoDB
+mongoose
+  .connect(
+    process.env.MONGODB_URI || "mongodb://localhost:27017/climate-guardian"
+  )
+  .then(() => console.log("📦 Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
+
+// Import routes
+const authRoutes = require("./api/auth");
+
+// Use routes
+app.use("/api/auth", authRoutes);
 
 // Initialize Google Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
