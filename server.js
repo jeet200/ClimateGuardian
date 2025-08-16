@@ -12,10 +12,13 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "production"
-        ? process.env.FRONTEND_URL
-        : "http://localhost:5000",
+    origin: process.env.NODE_ENV === "production" 
+      ? [
+          process.env.FRONTEND_URL,
+          /^https:\/\/.*\.vercel\.app$/,
+          /^https:\/\/climate-project-.*\.vercel\.app$/
+        ]
+      : ["http://localhost:5000", "http://localhost:3000"],
     credentials: true,
   })
 );
@@ -28,8 +31,14 @@ mongoose
   .connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/climate-guardian"
   )
-  .then(() => console.log("📦 Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .then(() => {
+    console.log("📦 Connected to MongoDB");
+    console.log("🔗 MongoDB URI:", process.env.MONGODB_URI ? "Set" : "Not set");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    console.error("🔗 MongoDB URI:", process.env.MONGODB_URI ? "Set but invalid" : "Not set");
+  });
 
 // Import routes
 const authRoutes = require("./api/auth");
@@ -89,6 +98,22 @@ const ECO_ACTIONS = [
   "Start a small herb garden",
   "Use energy-efficient appliances",
 ];
+
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "OK",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development",
+    mongodb: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    env_vars: {
+      MONGODB_URI: !!process.env.MONGODB_URI,
+      JWT_SECRET: !!process.env.JWT_SECRET,
+      GEMINI_API_KEY: !!process.env.GEMINI_API_KEY,
+      OPENWEATHER_API_KEY: !!process.env.OPENWEATHER_API_KEY
+    }
+  });
+});
 
 // API Routes
 
