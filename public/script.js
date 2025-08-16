@@ -755,8 +755,439 @@ function setupMouseTracking() {
   });
 }
 
+// Authentication Modal Functions
+function showLoginModal() {
+  document.getElementById('loginModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    document.getElementById('loginEmail').focus();
+  }, 300);
+}
+
+function showSignupModal() {
+  document.getElementById('signupModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    document.getElementById('signupName').focus();
+  }, 300);
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.add('hidden');
+  document.body.style.overflow = 'auto';
+  // Clear form data
+  const form = document.querySelector(`#${modalId} form`);
+  if (form) {
+    form.reset();
+    // Hide messages
+    const message = form.querySelector('.message');
+    if (message) {
+      message.style.display = 'none';
+    }
+    // Reset password strength indicators
+    const strengthBar = form.querySelector('.strength-bar');
+    const requirements = form.querySelector('.password-requirements');
+    const strengthContainer = form.querySelector('.password-strength');
+    
+    if (strengthBar) strengthBar.style.width = '0';
+    if (requirements) requirements.classList.remove('visible');
+    if (strengthContainer) strengthContainer.classList.remove('visible');
+  }
+}
+
+function switchToSignup() {
+  closeModal('loginModal');
+  setTimeout(() => {
+    showSignupModal();
+  }, 200);
+}
+
+function switchToLogin() {
+  closeModal('signupModal');
+  setTimeout(() => {
+    showLoginModal();
+  }, 200);
+}
+
+// Enhanced form validation functions
+function validateEmail(email) {
+  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return re.test(email);
+}
+
+function validateName(name) {
+  return name.trim().length >= 2 && /^[a-zA-Z\s]+$/.test(name);
+}
+
+function checkPasswordStrength(password) {
+  const requirements = {
+    length: password.length >= 8,
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    number: /\d/.test(password)
+  };
+  
+  const score = Object.values(requirements).filter(Boolean).length;
+  return { requirements, score };
+}
+
+function updatePasswordStrength(password) {
+  const { requirements, score } = checkPasswordStrength(password);
+  const strengthBar = document.querySelector('#signupModal .strength-bar');
+  const strengthContainer = document.querySelector('#signupModal .password-strength');
+  const requirementsContainer = document.querySelector('#signupModal .password-requirements');
+  const passwordGroup = document.querySelector('#signupModal .password-group');
+  
+  if (password.length > 0) {
+    strengthContainer.classList.add('visible');
+    requirementsContainer.classList.add('visible');
+    passwordGroup.classList.add('has-requirements');
+    
+    const percentage = (score / 4) * 100;
+    strengthBar.style.width = percentage + '%';
+    
+    // Update requirement indicators
+    Object.entries(requirements).forEach(([key, met]) => {
+      const element = document.getElementById(`req-${key}`);
+      const icon = element.querySelector('i');
+      
+      if (met) {
+        element.classList.add('met');
+        icon.className = 'fas fa-check';
+      } else {
+        element.classList.remove('met');
+        icon.className = 'fas fa-times';
+      }
+    });
+  } else {
+    strengthContainer.classList.remove('visible');
+    requirementsContainer.classList.remove('visible');
+    passwordGroup.classList.remove('has-requirements');
+  }
+}
+
+function showMessage(messageId, text, type = 'error') {
+  const messageEl = document.getElementById(messageId);
+  messageEl.textContent = text;
+  messageEl.className = `message ${type}`;
+  messageEl.style.display = 'block';
+  
+  if (type === 'success') {
+    setTimeout(() => {
+      messageEl.style.display = 'none';
+    }, 3000);
+  }
+}
+
+function hideMessage(messageId) {
+  const messageEl = document.getElementById(messageId);
+  messageEl.style.display = 'none';
+}
+
+function setLoading(formId, loading) {
+  const form = document.getElementById(formId);
+  const btn = form.querySelector('.auth-btn');
+  const btnText = form.querySelector('.btn-text');
+  const spinner = form.querySelector('.loading-spinner');
+  
+  if (loading) {
+    btn.disabled = true;
+    btnText.style.opacity = '0';
+    spinner.style.display = 'block';
+  } else {
+    btn.disabled = false;
+    btnText.style.opacity = '1';
+    spinner.style.display = 'none';
+  }
+}
+
+// Initialize authentication event listeners
+function initializeAuthEvents() {
+  // Login form
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    
+    // Client-side validation
+    if (!email || !password) {
+      showMessage('loginMessage', 'Please fill in all fields', 'error');
+      return;
+    }
+    
+    if (!validateEmail(email)) {
+      showMessage('loginMessage', 'Please enter a valid email address', 'error');
+      return;
+    }
+    
+    if (password.length < 8) {
+      showMessage('loginMessage', 'Password must be at least 8 characters long', 'error');
+      return;
+    }
+    
+    setLoading('loginForm', true);
+    hideMessage('loginMessage');
+    
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        showMessage('loginMessage', 'Login successful! Welcome back!', 'success');
+        // Store user data in localStorage
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Update UI
+        updateAuthUI(data.user);
+        
+        // Close modal and celebrate
+        setTimeout(() => {
+          closeModal('loginModal');
+          createLoginParticles();
+        }, 1000);
+      } else {
+        showMessage('loginMessage', data.message || 'Login failed. Please check your credentials.', 'error');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      showMessage('loginMessage', 'Network error. Please check your connection and try again.', 'error');
+    } finally {
+      setLoading('loginForm', false);
+    }
+  });
+
+  // Signup form
+  document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const confirmPassword = document.getElementById('signupConfirmPassword').value;
+    
+    // Client-side validation
+    if (!name || !email || !password || !confirmPassword) {
+      showMessage('signupMessage', 'Please fill in all fields', 'error');
+      return;
+    }
+    
+    if (!validateName(name)) {
+      showMessage('signupMessage', 'Please enter a valid full name (letters only)', 'error');
+      return;
+    }
+    
+    if (!validateEmail(email)) {
+      showMessage('signupMessage', 'Please enter a valid email address', 'error');
+      return;
+    }
+    
+    const { score } = checkPasswordStrength(password);
+    if (score < 3) {
+      showMessage('signupMessage', 'Please create a stronger password', 'error');
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      showMessage('signupMessage', 'Passwords do not match', 'error');
+      return;
+    }
+    
+    setLoading('signupForm', true);
+    hideMessage('signupMessage');
+    
+    try {
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ name, email, password })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        showMessage('signupMessage', 'Account created successfully! Welcome to Climate Guardian!', 'success');
+        // Store user data in localStorage
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Update UI
+        updateAuthUI(data.user);
+        
+        // Close modal and celebrate
+        setTimeout(() => {
+          closeModal('signupModal');
+          createSignupParticles();
+        }, 1500);
+      } else {
+        showMessage('signupMessage', data.message || 'Account creation failed. Please try again.', 'error');
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      showMessage('signupMessage', 'Network error. Please check your connection and try again.', 'error');
+    } finally {
+      setLoading('signupForm', false);
+    }
+  });
+
+  // Real-time validation for signup
+  document.getElementById('signupName').addEventListener('input', function(e) {
+    const name = e.target.value;
+    if (name && !validateName(name)) {
+      e.target.style.borderColor = '#ff6b6b';
+      e.target.style.boxShadow = '0 0 15px rgba(255, 107, 107, 0.3)';
+    } else {
+      e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+      e.target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+    }
+  });
+
+  document.getElementById('signupEmail').addEventListener('input', function(e) {
+    const email = e.target.value;
+    if (email && !validateEmail(email)) {
+      e.target.style.borderColor = '#ff6b6b';
+      e.target.style.boxShadow = '0 0 15px rgba(255, 107, 107, 0.3)';
+    } else {
+      e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+      e.target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+    }
+  });
+
+  document.getElementById('signupPassword').addEventListener('input', function(e) {
+    const password = e.target.value;
+    updatePasswordStrength(password);
+    
+    const { score } = checkPasswordStrength(password);
+    if (password && score < 3) {
+      e.target.style.borderColor = '#ff6b6b';
+      e.target.style.boxShadow = '0 0 15px rgba(255, 107, 107, 0.3)';
+    } else if (password && score >= 3) {
+      e.target.style.borderColor = '#48ca4e';
+      e.target.style.boxShadow = '0 0 15px rgba(72, 202, 78, 0.3)';
+    } else {
+      e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+      e.target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+    }
+  });
+
+  document.getElementById('signupConfirmPassword').addEventListener('input', function(e) {
+    const password = document.getElementById('signupPassword').value;
+    const confirmPassword = e.target.value;
+    
+    if (confirmPassword && password !== confirmPassword) {
+      e.target.style.borderColor = '#ff6b6b';
+      e.target.style.boxShadow = '0 0 15px rgba(255, 107, 107, 0.3)';
+    } else if (confirmPassword && password === confirmPassword) {
+      e.target.style.borderColor = '#48ca4e';
+      e.target.style.boxShadow = '0 0 15px rgba(72, 202, 78, 0.3)';
+    } else {
+      e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+      e.target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+    }
+  });
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const loginModal = document.getElementById('loginModal');
+      const signupModal = document.getElementById('signupModal');
+      
+      if (!loginModal.classList.contains('hidden')) {
+        closeModal('loginModal');
+      }
+      if (!signupModal.classList.contains('hidden')) {
+        closeModal('signupModal');
+      }
+    }
+  });
+}
+
+// Particle animations
+function createLoginParticles() {
+  for (let i = 0; i < 30; i++) {
+    const particle = document.createElement('div');
+    particle.style.position = 'fixed';
+    particle.style.width = Math.random() * 4 + 2 + 'px';
+    particle.style.height = particle.style.width;
+    particle.style.backgroundColor = '#00f5ff';
+    particle.style.borderRadius = '50%';
+    particle.style.pointerEvents = 'none';
+    particle.style.zIndex = '9999';
+    particle.style.left = Math.random() * window.innerWidth + 'px';
+    particle.style.top = window.innerHeight + 'px';
+    particle.style.animation = `particleFloat ${Math.random() * 2 + 2}s ease-out forwards`;
+    document.body.appendChild(particle);
+    
+    setTimeout(() => {
+      particle.remove();
+    }, 4000);
+  }
+}
+
+function createSignupParticles() {
+  for (let i = 0; i < 60; i++) {
+    const particle = document.createElement('div');
+    particle.style.position = 'fixed';
+    particle.style.width = Math.random() * 6 + 2 + 'px';
+    particle.style.height = particle.style.width;
+    particle.style.backgroundColor = ['#00f5ff', '#00d4ff', '#51cf66', '#feca57'][Math.floor(Math.random() * 4)];
+    particle.style.borderRadius = '50%';
+    particle.style.pointerEvents = 'none';
+    particle.style.zIndex = '9999';
+    particle.style.left = Math.random() * window.innerWidth + 'px';
+    particle.style.top = window.innerHeight + 'px';
+    particle.style.animation = `particleFloat ${Math.random() * 3 + 2}s ease-out forwards`;
+    document.body.appendChild(particle);
+    
+    setTimeout(() => {
+      particle.remove();
+    }, 5000);
+  }
+}
+
+// Add particle animation keyframes
+const authStyle = document.createElement('style');
+authStyle.textContent = `
+  @keyframes particleFloat {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-120vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(authStyle);
+
+// Update the initialization to include auth events
+function initializeApp() {
+  setupEventListeners();
+  initializeAuthEvents();
+  loadUserProgress();
+  loadDailyActions();
+  loadClimateData();
+  showPage("home");
+}
+
 // Export functions for global access
 window.showPage = showPage;
 window.sendMessage = sendMessage;
 window.askQuickQuestion = askQuickQuestion;
 window.toggleAction = toggleAction;
+window.showLoginModal = showLoginModal;
+window.showSignupModal = showSignupModal;
+window.closeModal = closeModal;
+window.switchToSignup = switchToSignup;
+window.switchToLogin = switchToLogin;
