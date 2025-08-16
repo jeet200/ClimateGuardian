@@ -23,8 +23,8 @@ function initializeApp() {
 
 // Setup event listeners
 function setupEventListeners() {
-  // Navigation
-  document.querySelectorAll(".nav-link").forEach((link) => {
+  // Navigation - Desktop
+  document.querySelectorAll(".nav-item").forEach((link) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
       const targetPage = link.getAttribute("href").substring(1);
@@ -32,13 +32,33 @@ function setupEventListeners() {
     });
   });
 
-  // Mobile menu toggle
-  const hamburger = document.querySelector(".hamburger");
-  const navMenu = document.querySelector(".nav-menu");
-
-  hamburger.addEventListener("click", () => {
-    navMenu.classList.toggle("active");
+  // Navigation - Mobile
+  document.querySelectorAll(".mobile-nav-item").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const targetPage = link.getAttribute("href").substring(1);
+      showPage(targetPage);
+      
+      // Close mobile menu after navigation
+      const mobileToggle = document.getElementById('mobile-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileToggle && mobileMenu) {
+        mobileToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      }
+    });
   });
+
+  // Mobile menu toggle
+  const mobileToggle = document.querySelector(".mobile-menu-toggle");
+  const mobileMenu = document.querySelector(".mobile-menu");
+
+  if (mobileToggle && mobileMenu) {
+    mobileToggle.addEventListener("click", () => {
+      mobileToggle.classList.toggle("active");
+      mobileMenu.classList.toggle("active");
+    });
+  }
 
   // Add mouse tracking for navigation links
   setupMouseTracking();
@@ -56,10 +76,10 @@ function setupEventListeners() {
   });
 
   // Update navigation active state
-  document.querySelectorAll(".nav-link").forEach((link) => {
+  document.querySelectorAll(".nav-item, .mobile-nav-item").forEach((link) => {
     link.addEventListener("click", (e) => {
       document
-        .querySelectorAll(".nav-link")
+        .querySelectorAll(".nav-item, .mobile-nav-item")
         .forEach((l) => l.classList.remove("active"));
       link.classList.add("active");
     });
@@ -79,8 +99,16 @@ function showPage(pageId) {
     targetPage.classList.add("active");
     currentPage = pageId;
 
-    // Update navigation active state
-    document.querySelectorAll(".nav-link").forEach((link) => {
+    // Update navigation active state - Desktop
+    document.querySelectorAll(".nav-item").forEach((link) => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === `#${pageId}`) {
+        link.classList.add("active");
+      }
+    });
+
+    // Update navigation active state - Mobile
+    document.querySelectorAll(".mobile-nav-item").forEach((link) => {
       link.classList.remove("active");
       if (link.getAttribute("href") === `#${pageId}`) {
         link.classList.add("active");
@@ -718,7 +746,7 @@ function hideTooltip(e) {
 
 // Mouse tracking for navigation links
 function setupMouseTracking() {
-  const navLinks = document.querySelectorAll(".nav-link");
+  const navLinks = document.querySelectorAll(".nav-item, .mobile-nav-item");
   
   navLinks.forEach(link => {
     link.addEventListener("mousemove", (e) => {

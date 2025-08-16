@@ -15,27 +15,77 @@
     <header>
         <nav class="navbar">
             <div class="nav-container">
-                <div class="nav-logo">
-                    <h1>🌱 ClimateGuardian</h1>
+                <div class="nav-brand">
+                    <div class="brand-icon">🌱</div>
+                    <h1 class="brand-text">ClimateGuardian</h1>
                 </div>
-                <ul class="nav-menu">
-                    <li><a href="#home" class="nav-link">Home</a></li>
-                    <li><a href="#calculator" class="nav-link">Calculator</a></li>
-                    <li><a href="#chat" class="nav-link">AI Chat</a></li>
-                    <li><a href="#progress" class="nav-link">Progress</a></li>
-                    <li><a href="#tips" class="nav-link">Daily Tips</a></li>
-                    <li><a href="#developer" class="nav-link">Developer</a></li>
-                    <li id="auth-links">
-                        <a href="#" class="nav-link" id="login-link" onclick="showLoginModal()">Login</a>
-                        <a href="#" class="nav-link" id="signup-link" onclick="showSignupModal()">Sign Up</a>
-                        <a href="#" class="nav-link hidden" id="logout-link">Logout</a>
-                        <span class="nav-link hidden" id="user-name"></span>
-                    </li>
+                
+                <ul class="nav-links">
+                    <li><a href="#home" class="nav-item active">Home</a></li>
+                    <li><a href="#calculator" class="nav-item">Calculator</a></li>
+                    <li><a href="#chat" class="nav-item">AI Chat</a></li>
+                    <li><a href="#progress" class="nav-item">Progress</a></li>
+                    <li><a href="#tips" class="nav-item">Daily Tips</a></li>
+                    <li><a href="#developer" class="nav-item">Developer</a></li>
                 </ul>
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                
+                <div class="nav-actions">
+                    <button class="btn-login" id="login-btn" onclick="showLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </button>
+                    <button class="btn-signup" id="signup-btn" onclick="showSignupModal()">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Sign Up</span>
+                    </button>
+                    <div class="user-menu hidden" id="user-menu">
+                        <div class="user-info">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="user-display-name">Welcome</span>
+                        </div>
+                        <button class="btn-logout" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-toggle" id="mobile-toggle">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div class="mobile-menu" id="mobile-menu">
+                <div class="mobile-nav-links">
+                    <a href="#home" class="mobile-nav-item active">Home</a>
+                    <a href="#calculator" class="mobile-nav-item">Calculator</a>
+                    <a href="#chat" class="mobile-nav-item">AI Chat</a>
+                    <a href="#progress" class="mobile-nav-item">Progress</a>
+                    <a href="#tips" class="mobile-nav-item">Daily Tips</a>
+                    <a href="#developer" class="mobile-nav-item">Developer</a>
+                </div>
+                <div class="mobile-auth">
+                    <button class="mobile-btn-login" onclick="showLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </button>
+                    <button class="mobile-btn-signup" onclick="showSignupModal()">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Sign Up</span>
+                    </button>
+                    <div class="mobile-user-menu hidden" id="mobile-user-menu">
+                        <div class="mobile-user-info">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="mobile-user-name">Welcome</span>
+                        </div>
+                        <button class="mobile-btn-logout" id="mobile-logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -531,28 +581,75 @@
 
         // Update UI based on authentication status
         function updateAuthUI(user) {
-            const loginLink = document.getElementById('login-link');
-            const signupLink = document.getElementById('signup-link');
-            const logoutLink = document.getElementById('logout-link');
-            const userNameSpan = document.getElementById('user-name');
+            // Desktop auth elements
+            const loginBtn = document.getElementById('login-btn');
+            const signupBtn = document.getElementById('signup-btn');
+            const userMenu = document.getElementById('user-menu');
+            const userDisplayName = document.getElementById('user-display-name');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            // Mobile auth elements
+            const mobileAuth = document.querySelector('.mobile-auth');
+            const mobileUserMenu = document.getElementById('mobile-user-menu');
+            const mobileUserName = document.getElementById('mobile-user-name');
+            const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
 
             if (user) {
-                loginLink.classList.add('hidden');
-                signupLink.classList.add('hidden');
-                logoutLink.classList.remove('hidden');
-                userNameSpan.classList.remove('hidden');
-                userNameSpan.textContent = `Welcome, ${user.name}`;
+                // Desktop
+                if (loginBtn) loginBtn.classList.add('hidden');
+                if (signupBtn) signupBtn.classList.add('hidden');
+                if (userMenu) userMenu.classList.remove('hidden');
+                if (userDisplayName) userDisplayName.textContent = user.name;
+                
+                // Mobile
+                if (mobileAuth) {
+                    mobileAuth.innerHTML = `
+                        <div class="mobile-user-menu" id="mobile-user-menu">
+                            <div class="mobile-user-info">
+                                <i class="fas fa-user-circle"></i>
+                                <span id="mobile-user-name">${user.name}</span>
+                            </div>
+                            <button class="mobile-btn-logout" id="mobile-logout-btn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
+                        </div>
+                    `;
+                    // Re-attach event listener for mobile logout
+                    const newMobileLogoutBtn = document.getElementById('mobile-logout-btn');
+                    if (newMobileLogoutBtn) {
+                        newMobileLogoutBtn.addEventListener('click', handleLogout);
+                    }
+                }
             } else {
-                loginLink.classList.remove('hidden');
-                signupLink.classList.remove('hidden');
-                logoutLink.classList.add('hidden');
-                userNameSpan.classList.add('hidden');
+                // Desktop
+                if (loginBtn) loginBtn.classList.remove('hidden');
+                if (signupBtn) signupBtn.classList.remove('hidden');
+                if (userMenu) userMenu.classList.add('hidden');
+                
+                // Mobile
+                if (mobileAuth) {
+                    mobileAuth.innerHTML = `
+                        <button class="mobile-btn-login" onclick="showLoginModal()">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </button>
+                        <button class="mobile-btn-signup" onclick="showSignupModal()">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Sign Up</span>
+                        </button>
+                    `;
+                }
             }
         }
 
-        // Handle logout
-        document.getElementById('logout-link').addEventListener('click', async (e) => {
+        // Handle logout for both desktop and mobile
+        function handleLogout(e) {
             e.preventDefault();
+            logout();
+        }
+        
+        async function logout() {
             try {
                 const response = await fetch('/api/auth/logout', {
                     method: 'POST',
@@ -586,6 +683,30 @@
             } catch (error) {
                 console.error('Logout failed:', error);
             }
+        }
+        
+        // Desktop logout button
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', handleLogout);
+        }
+        
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileToggle && mobileMenu) {
+            mobileToggle.addEventListener('click', () => {
+                mobileToggle.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+            });
+        }
+        
+        // Close mobile menu when clicking nav items
+        document.querySelectorAll('.mobile-nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                mobileToggle.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
         });
 
         // Add slide in animation
