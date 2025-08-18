@@ -232,7 +232,7 @@ app.get("/api/daily-actions", (req, res) => {
 // Weather and climate data
 app.get("/api/climate-data", async (req, res) => {
   try {
-    const { city = "London" } = req.query;
+    const { city = "Australia" } = req.query;
     const API_KEY = process.env.OPENWEATHER_API_KEY;
 
     if (!API_KEY) {
