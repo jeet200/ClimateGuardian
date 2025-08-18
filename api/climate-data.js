@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { city = 'London' } = req.query;
+    const { city = 'Australia' } = req.query;
     const API_KEY = process.env.OPENWEATHER_API_KEY;
     
     if (!API_KEY) {
