@@ -302,6 +302,27 @@
                         <canvas id="footprint-chart"></canvas>
                     </div>
                     <div class="progress-card">
+                        <h3>Daily Actions Streak</h3>
+                        <canvas id="streak-chart"></canvas>
+                        <div class="streak-stats">
+                            <div class="streak-stat">
+                                <span class="stat-label">Current Streak</span>
+                                <span class="stat-value" id="current-streak-stat">0</span>
+                            </div>
+                            <div class="streak-stat">
+                                <span class="stat-label">Longest Streak</span>
+                                <span class="stat-value" id="longest-streak-stat">0</span>
+                            </div>
+                            <div class="streak-stat">
+                                <span class="stat-label">Total Actions</span>
+                                <span class="stat-value" id="total-actions-stat">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="progress-grid">
+                    <div class="progress-card">
                         <h3>Achievements</h3>
                         <div id="achievements" class="achievements">
                             <div class="achievement">
@@ -315,6 +336,23 @@
                             <div class="achievement locked">
                                 <i class="fas fa-trophy"></i>
                                 <span>Month Streak</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-card">
+                        <h3>Monthly Summary</h3>
+                        <div class="monthly-summary">
+                            <div class="summary-stat">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>Days Completed: <span id="days-completed">0</span></span>
+                            </div>
+                            <div class="summary-stat">
+                                <i class="fas fa-percentage"></i>
+                                <span>Success Rate: <span id="success-rate">0%</span></span>
+                            </div>
+                            <div class="summary-stat">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Trend: <span id="trend">-</span></span>
                             </div>
                         </div>
                     </div>

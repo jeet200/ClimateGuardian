@@ -324,11 +324,21 @@ function focusChatInput() {
 // Load daily actions
 async function loadDailyActions() {
   try {
-    const response = await fetch("/api/daily-actions");
+    const response = await fetch("/api/daily-actions", {
+      credentials: 'include'
+    });
     const result = await response.json();
 
     if (response.ok) {
-      displayDailyActions(result.actions);
+      // Update streak display
+      document.getElementById("streak-count").textContent = result.streak || 0;
+      
+      // Show authentication message if not logged in
+      if (!result.authenticated && result.message) {
+        showAuthenticationPrompt(result.message);
+      }
+      
+      displayDailyActions(result.actions, result.authenticated);
     } else {
       showError("Failed to load daily actions");
     }
@@ -338,20 +348,56 @@ async function loadDailyActions() {
   }
 }
 
-// Display daily actions
-function displayDailyActions(actions) {
+// Show authentication prompt
+function showAuthenticationPrompt(message) {
   const container = document.getElementById("daily-actions");
-  container.innerHTML = "";
+  
+  // Remove any existing auth prompts to prevent duplicates
+  const existingPrompts = container.querySelectorAll('.auth-prompt');
+  existingPrompts.forEach(prompt => prompt.remove());
+  
+  // Create authentication prompt
+  const authPrompt = document.createElement("div");
+  authPrompt.className = "auth-prompt";
+  authPrompt.innerHTML = `
+    <div class="auth-prompt-content">
+      <i class="fas fa-user-lock"></i>
+      <h3>Login Required</h3>
+      <p>${message}</p>
+      <div class="auth-prompt-buttons">
+        <button class="auth-btn login-btn" onclick="showLoginModal()">
+          <i class="fas fa-sign-in-alt"></i>
+          Login
+        </button>
+        <button class="auth-btn signup-btn" onclick="showSignupModal()">
+          <i class="fas fa-user-plus"></i>
+          Sign Up
+        </button>
+      </div>
+    </div>
+  `;
+  
+  container.insertBefore(authPrompt, container.firstChild);
+}
+
+// Display daily actions
+function displayDailyActions(actions, authenticated = false) {
+  const container = document.getElementById("daily-actions");
+  
+  // Clear only the actions, not the auth prompt
+  const existingActions = container.querySelectorAll('.action-item');
+  existingActions.forEach(item => item.remove());
 
   actions.forEach((action) => {
     const actionDiv = document.createElement("div");
     actionDiv.className = "action-item";
     actionDiv.innerHTML = `
             <div class="action-checkbox ${action.completed ? "checked" : ""}" 
-                 onclick="toggleAction(${action.id})">
+                 onclick="toggleAction(${action.id}, ${authenticated})">
                 ${action.completed ? "✓" : ""}
             </div>
             <span class="action-text">${action.action}</span>
+            ${!authenticated ? '<i class="fas fa-lock auth-lock" title="Login to save progress"></i>' : ''}
         `;
 
     if (action.completed) {
@@ -365,41 +411,68 @@ function displayDailyActions(actions) {
 }
 
 // Toggle action completion
-function toggleAction(actionId) {
+async function toggleAction(actionId, authenticated = false) {
+  if (!authenticated) {
+    // Show login prompt
+    showLoginModal();
+    return;
+  }
+
   const checkbox = document.querySelector(
-    `[onclick="toggleAction(${actionId})"]`
+    `[onclick="toggleAction(${actionId}, ${authenticated})"]`
   );
   const actionItem = checkbox.closest(".action-item");
   const isCompleted = checkbox.classList.contains("checked");
+  const newCompletedState = !isCompleted;
 
-  if (isCompleted) {
-    // Uncomplete action
-    checkbox.classList.remove("checked");
-    checkbox.innerHTML = "";
-    actionItem.classList.remove("completed");
+  try {
+    // Send request to server
+    const response = await fetch('/api/daily-actions/complete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        actionId: actionId,
+        completed: newCompletedState
+      })
+    });
 
-    // Remove from completed actions
-    const index = userProgress.completedActions.indexOf(actionId);
-    if (index > -1) {
-      userProgress.completedActions.splice(index, 1);
+    const result = await response.json();
+
+    if (response.ok) {
+      // Update UI based on server response
+      if (newCompletedState) {
+        checkbox.classList.add("checked");
+        checkbox.innerHTML = "✓";
+        actionItem.classList.add("completed");
+        celebrateActionCompletion();
+      } else {
+        checkbox.classList.remove("checked");
+        checkbox.innerHTML = "";
+        actionItem.classList.remove("completed");
+      }
+
+      // Update streak display
+      document.getElementById("streak-count").textContent = result.streak;
+
+      // Show success message if all actions completed
+      if (result.allCompleted) {
+        showStreakCelebration(result.streak);
+      }
+
+      updateProgressBar();
+    } else if (response.status === 401) {
+      // Authentication required
+      showLoginModal();
+    } else {
+      throw new Error(result.error || 'Failed to update action');
     }
-  } else {
-    // Complete action
-    checkbox.classList.add("checked");
-    checkbox.innerHTML = "✓";
-    actionItem.classList.add("completed");
-
-    // Add to completed actions
-    if (!userProgress.completedActions.includes(actionId)) {
-      userProgress.completedActions.push(actionId);
-    }
-
-    // Celebrate completion
-    celebrateActionCompletion();
+  } catch (error) {
+    console.error('Error toggling action:', error);
+    showError('Failed to update action. Please try again.');
   }
-
-  updateProgressBar();
-  saveUserProgress();
 }
 
 // Update progress bar
@@ -420,6 +493,46 @@ function updateProgressBar() {
   }
 
   document.getElementById("streak-count").textContent = userProgress.streak;
+}
+
+// Show streak celebration
+function showStreakCelebration(streak) {
+  const celebration = document.createElement("div");
+  celebration.className = "streak-celebration";
+  celebration.innerHTML = `
+    <div class="celebration-content">
+      <i class="fas fa-fire"></i>
+      <h3>🎉 Streak Complete!</h3>
+      <p>You've completed all actions today!</p>
+      <p class="streak-number">Day ${streak} Streak!</p>
+    </div>
+  `;
+  
+  document.body.appendChild(celebration);
+  
+  // Remove after animation
+  setTimeout(() => {
+    celebration.remove();
+  }, 4000);
+}
+
+// Show error message
+function showError(message) {
+  const errorDiv = document.createElement("div");
+  errorDiv.className = "error-message";
+  errorDiv.innerHTML = `
+    <div class="error-content">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span>${message}</span>
+    </div>
+  `;
+  
+  document.body.appendChild(errorDiv);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    errorDiv.remove();
+  }, 3000);
 }
 
 // Celebrate action completion
@@ -511,9 +624,39 @@ function displayFallbackClimateData() {
 }
 
 // Load progress data
-function loadProgressData() {
+async function loadProgressData() {
+  await loadStreakHistory();
   displayFootprintChart();
+  displayStreakChart();
   displayAchievements();
+}
+
+// Load streak history from API
+async function loadStreakHistory() {
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      console.log('User not authenticated, skipping streak history');
+      return;
+    }
+
+    const response = await fetch('/api/daily-actions/history?days=30', {
+      credentials: 'include'
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      userProgress.streakHistory = data.history;
+      userProgress.streakData = data.streakData;
+      
+      // Update current streak display
+      document.getElementById("streak-count").textContent = data.streakData.currentStreak;
+    } else if (response.status === 401) {
+      console.log('Authentication required for streak history');
+    }
+  } catch (error) {
+    console.error('Error loading streak history:', error);
+  }
 }
 
 // Display footprint chart
@@ -581,6 +724,176 @@ function displayFootprintChart() {
       elements: {
         point: {
           radius: 4,
+        },
+      },
+    },
+  });
+}
+
+// Display streak chart
+function displayStreakChart() {
+  const ctx = document.getElementById("streak-chart").getContext("2d");
+  
+  // Prepare data for chart
+  let labels = [];
+  let completionData = [];
+  let streakData = [];
+  
+  if (userProgress.streakHistory && userProgress.streakHistory.length > 0) {
+    userProgress.streakHistory.forEach((day, index) => {
+      const date = new Date(day.date);
+      labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+      completionData.push(day.completed ? 1 : 0);
+      
+      // Calculate streak at this point
+      let currentStreak = 0;
+      for (let i = index; i >= 0; i--) {
+        if (userProgress.streakHistory[i].completed) {
+          currentStreak++;
+        } else {
+          break;
+        }
+      }
+      streakData.push(currentStreak);
+    });
+    
+    // Update streak stats
+    if (userProgress.streakData) {
+      document.getElementById("current-streak-stat").textContent = userProgress.streakData.currentStreak;
+      document.getElementById("longest-streak-stat").textContent = userProgress.streakData.longestStreak;
+      document.getElementById("total-actions-stat").textContent = userProgress.streakData.totalActionsCompleted;
+      
+      // Calculate monthly summary
+      const completedDays = userProgress.streakHistory.filter(day => day.completed).length;
+      const totalDays = userProgress.streakHistory.length;
+      const successRate = totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
+      
+      document.getElementById("days-completed").textContent = completedDays;
+      document.getElementById("success-rate").textContent = successRate + '%';
+      
+      // Calculate trend
+      const recentDays = userProgress.streakHistory.slice(-7);
+      const recentCompleted = recentDays.filter(day => day.completed).length;
+      const recentRate = recentDays.length > 0 ? (recentCompleted / recentDays.length) : 0;
+      
+      let trend = 'Stable';
+      if (recentRate > 0.7) trend = '📈 Improving';
+      else if (recentRate < 0.3) trend = '📉 Declining';
+      
+      document.getElementById("trend").textContent = trend;
+    }
+  } else {
+    // No data available
+    labels = ['No Data'];
+    completionData = [0];
+    streakData = [0];
+  }
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Daily Completion",
+          data: completionData,
+          borderColor: "#00f5ff",
+          backgroundColor: "rgba(0, 245, 255, 0.1)",
+          borderWidth: 2,
+          fill: false,
+          tension: 0.1,
+          yAxisID: 'y'
+        },
+        {
+          label: "Streak Progress",
+          data: streakData,
+          borderColor: "#ff6b35",
+          backgroundColor: "rgba(255, 107, 53, 0.1)",
+          borderWidth: 2,
+          fill: true,
+          tension: 0.4,
+          yAxisID: 'y1'
+        }
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      scales: {
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          beginAtZero: true,
+          max: 1,
+          title: {
+            display: true,
+            text: "Completed",
+            color: "#00f5ff"
+          },
+          ticks: {
+            stepSize: 1,
+            callback: function(value) {
+              return value === 1 ? 'Yes' : 'No';
+            },
+            color: "#00f5ff"
+          },
+          grid: {
+            color: "rgba(0, 245, 255, 0.1)"
+          }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "Streak Days",
+            color: "#ff6b35"
+          },
+          ticks: {
+            color: "#ff6b35"
+          },
+          grid: {
+            drawOnChartArea: false,
+            color: "rgba(255, 107, 53, 0.1)"
+          },
+        },
+        x: {
+          ticks: {
+            maxTicksLimit: 10,
+            color: "#e0e0e0"
+          },
+          grid: {
+            color: "rgba(255, 255, 255, 0.1)"
+          }
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            color: "#e0e0e0",
+            usePointStyle: true
+          }
+        },
+        tooltip: {
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          titleColor: "#ffffff",
+          bodyColor: "#e0e0e0",
+          borderColor: "#00f5ff",
+          borderWidth: 1
+        }
+      },
+      elements: {
+        point: {
+          radius: 3,
+          hoverRadius: 6
         },
       },
     },

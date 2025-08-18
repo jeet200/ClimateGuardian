@@ -42,9 +42,11 @@ mongoose
 
 // Import routes
 const authRoutes = require("./api/auth");
+const dailyActionsRoutes = require("./api/daily-actions");
 
 // Use routes
 app.use("/api/auth", authRoutes);
+app.use("/api/daily-actions", dailyActionsRoutes);
 
 // Initialize Google Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -210,24 +212,7 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
-// Daily eco-actions
-app.get("/api/daily-actions", (req, res) => {
-  const today = new Date().toDateString();
-  const randomSeed = today.split("").reduce((a, b) => a + b.charCodeAt(0), 0);
-
-  // Generate 3 daily actions based on today's date
-  const actions = [];
-  for (let i = 0; i < 3; i++) {
-    const index = (randomSeed + i * 7) % ECO_ACTIONS.length;
-    actions.push({
-      id: i + 1,
-      action: ECO_ACTIONS[index],
-      completed: false,
-    });
-  }
-
-  res.json({ date: today, actions });
-});
+// Note: Daily actions now handled by /api/daily-actions router
 
 // Weather and climate data
 app.get("/api/climate-data", async (req, res) => {
