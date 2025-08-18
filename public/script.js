@@ -45,20 +45,13 @@ function setupEventListeners() {
       if (mobileToggle && mobileMenu) {
         mobileToggle.classList.remove('active');
         mobileMenu.classList.remove('active');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
       }
     });
   });
 
-  // Mobile menu toggle
-  const mobileToggle = document.querySelector(".mobile-menu-toggle");
-  const mobileMenu = document.querySelector(".mobile-menu");
-
-  if (mobileToggle && mobileMenu) {
-    mobileToggle.addEventListener("click", () => {
-      mobileToggle.classList.toggle("active");
-      mobileMenu.classList.toggle("active");
-    });
-  }
+  // Mobile menu toggle is handled in index.html inline script
 
   // Add mouse tracking for navigation links
   setupMouseTracking();
@@ -129,8 +122,17 @@ function showPage(pageId) {
     }
   }
 
-  // Close mobile menu
-  document.querySelector(".nav-menu").classList.remove("active");
+  // Close mobile menu if it exists
+  const navMenu = document.querySelector(".mobile-menu");
+  if (navMenu) {
+    navMenu.classList.remove("active");
+    const mobileToggle = document.getElementById('mobile-toggle');
+    if (mobileToggle) {
+      mobileToggle.classList.remove('active');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+  }
   
   // Re-initialize mouse tracking after navigation
   setupMouseTracking();

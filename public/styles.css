@@ -66,6 +66,7 @@ body::before {
     margin: 0 auto;
     padding: 1rem 2rem;
     gap: 2rem;
+    position: relative;
 }
 
 /* Brand Section */
@@ -267,6 +268,20 @@ body::before {
     backdrop-filter: blur(20px);
     border-top: 1px solid rgba(71, 85, 105, 0.2);
     padding: 1rem 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .mobile-nav-links {
@@ -1327,153 +1342,626 @@ footer p {
     50% { opacity: 1; }
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .nav-container {
-        padding: 1rem;
+/* Mobile-First Responsive Design */
+
+/* Base styles - Mobile First (320px+) */
+.container {
+    padding: 0 1rem;
+}
+
+.nav-container {
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+}
+
+.brand-text {
+    font-size: 1.1rem;
+}
+
+.brand-icon {
+    font-size: 1.25rem;
+}
+
+/* Hide desktop navigation on mobile */
+.nav-links {
+    display: none;
+}
+
+.nav-actions {
+    display: none;
+}
+
+.mobile-menu-toggle {
+    display: flex;
+}
+
+/* Hero Section - Mobile */
+.hero {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+    padding: 2rem 1rem;
+    margin: 1rem 0;
+}
+
+.hero h2 {
+    font-size: 1.75rem;
+    line-height: 1.1;
+}
+
+.hero p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-stats {
+    justify-content: center;
+    gap: 1rem;
+}
+
+.stat {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+.hero-image img {
+    max-height: 200px;
+}
+
+/* Buttons - Mobile First */
+.cta-button, .calculate-btn, .action-btn {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0, 245, 255, 0.3);
+    min-height: 48px; /* Minimum touch target */
+}
+
+/* Grid Layouts - Mobile First */
+.feature-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.results-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.breakdown-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.progress-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.tips-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.climate-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.question-buttons {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.tech-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.developer-stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Forms - Mobile First */
+.form-section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.875rem;
+    font-size: 1rem;
+    min-height: 48px; /* Minimum touch target */
+    /* Better mobile input handling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Prevent zoom on iOS */
+    font-size: max(16px, 1rem);
+}
+
+/* Better select styling for mobile */
+.form-group select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f5ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+}
+
+/* Focus improvements for accessibility */
+.form-group input:focus,
+.form-group select:focus {
+    outline: 2px solid #00f5ff;
+    outline-offset: 2px;
+}
+
+/* Better button touch targets */
+button, .btn, .cta-button, .calculate-btn, .action-btn {
+    min-height: 48px;
+    min-width: 48px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 245, 255, 0.3);
+    touch-action: manipulation;
+}
+
+/* Improve checkbox and radio button touch targets */
+input[type="checkbox"],
+input[type="radio"] {
+    min-width: 20px;
+    min-height: 20px;
+    margin: 0 0.5rem 0 0;
+}
+
+.calculator-form {
+    padding: 1.5rem;
+}
+
+/* Cards - Mobile */
+.feature-card {
+    padding: 1.5rem;
+}
+
+.progress-card {
+    padding: 1.25rem;
+}
+
+.result-card {
+    padding: 1.25rem;
+}
+
+/* Actions */
+.actions {
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Chat - Mobile */
+.chat-messages {
+    height: 300px;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+#chat-input {
+    padding: 0.875rem;
+    font-size: 1rem;
+}
+
+#send-btn {
+    padding: 0.875rem 1.25rem;
+    min-width: 48px;
+    min-height: 48px;
+}
+
+/* Developer Section - Mobile */
+.developer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1.5rem;
+}
+
+.developer-photo {
+    width: 120px;
+    height: 120px;
+}
+
+.developer-name {
+    font-size: 1.6rem;
+}
+
+.developer-title {
+    font-size: 1.1rem;
+}
+
+.developer-description {
+    font-size: 1rem;
+}
+
+.developer-links {
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+/* Touch interactions */
+@media (hover: none) and (pointer: coarse) {
+    .nav-item:active,
+    .mobile-nav-item:active {
+        background: rgba(0, 245, 255, 0.15);
+        transform: scale(0.98);
     }
 
-    .nav-links {
-        display: none;
-    }
-
-    .nav-actions {
-        display: none;
-    }
-
-    .mobile-menu-toggle {
-        display: flex;
-    }
-
-    .mobile-menu.active {
-        display: block;
-    }
-
-    .brand-text {
-        font-size: 1.25rem;
-    }
-
-    .brand-icon {
-        font-size: 1.5rem;
-    }
-
-    /* Touch feedback for mobile devices */
-    @media (hover: none) and (pointer: coarse) {
-        .nav-link:active {
-            background: rgba(0, 245, 255, 0.15);
-            transform: scale(0.98);
-        }
-
-        .login-btn:active, .signup-btn:active {
-            transform: scale(0.98);
-            opacity: 0.9;
-        }
-    }
-    
-    /* Enhanced mobile form elements */
-    .form-section {
-        border-color: rgba(0, 245, 255, 0.15);
-        background: rgba(0, 245, 255, 0.03);
-    }
-    
-    .form-section:hover {
-        border-color: rgba(0, 245, 255, 0.3);
-        box-shadow: 0 0 15px rgba(0, 245, 255, 0.1);
-    }
-    
-    .form-group input:focus,
-    .form-group select:focus {
-        border-color: #00f5ff;
-        box-shadow: 0 0 15px rgba(0, 245, 255, 0.3);
-        background: rgba(255, 255, 255, 0.08);
-    }
-    
-    /* Mobile button enhancements */
-    .cta-button, .calculate-btn, .action-btn {
-        padding: 1.2rem 2.5rem;
-        font-size: 1.1rem;
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: rgba(0, 245, 255, 0.3);
-    }
-    
-    .cta-button:active, .calculate-btn:active, .action-btn:active {
+    .cta-button:active, 
+    .calculate-btn:active, 
+    .action-btn:active {
         transform: translateY(-1px) scale(0.98);
         box-shadow: 0 0 25px rgba(0, 245, 255, 0.4);
     }
 
-    .hero {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        text-align: center;
-    }
-
-    .hero h2 {
-        font-size: 2rem;
-    }
-
-    .hero-stats {
-        justify-content: center;
-    }
-
-    .hero-image img {
-        max-height: 250px;
-    }
-
-    .feature-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .results-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .breakdown-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .progress-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .tips-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .actions {
-        flex-direction: column;
-    }
-
-    .question-buttons {
-        grid-template-columns: 1fr;
-    }
-    
-    /* Enhanced mobile touch interactions */
     .feature-card:active,
     .progress-card:active,
     .result-card:active {
         transform: translateY(-5px) scale(0.98);
         box-shadow: 0 10px 40px rgba(0, 245, 255, 0.3);
     }
-    
-    .message-content:active {
-        transform: scale(0.98);
+
+    .question-buttons button:active {
+        transform: scale(0.95);
+        background: rgba(0, 245, 255, 0.2);
     }
-    
-    /* Better mobile menu close behavior */
-    .nav-menu .nav-link:active {
-        animation: menuItemTap 0.2s ease-out;
+}
+
+/* Small Mobile (up to 480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 0.75rem;
     }
-    
-    @keyframes menuItemTap {
-        0% { transform: translateX(0); }
-        50% { transform: translateX(10px); }
-        100% { transform: translateX(5px); }
+
+    .nav-container {
+        padding: 0.5rem 0.75rem;
     }
-    
-    /* Improved mobile scrolling */
+
+    .hero {
+        padding: 1.5rem 0.75rem;
+        margin: 0.5rem 0;
+    }
+
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+    .stat {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .hero-image img {
+        max-height: 180px;
+    }
+
+    .form-section {
+        padding: 0.75rem;
+    }
+
+    .calculator-form {
+        padding: 1rem;
+    }
+
+    .results {
+        padding: 1rem;
+    }
+
+    .progress-card {
+        padding: 1rem;
+    }
+
+    .feature-card {
+        padding: 1.25rem;
+    }
+
     .chat-messages {
-        -webkit-overflow-scrolling: touch;
-        scroll-behavior: smooth;
+        height: 250px;
+    }
+
+    .developer-photo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .developer-name {
+        font-size: 1.4rem;
+    }
+
+    .tech-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .tech-item {
+        padding: 0.75rem;
+    }
+
+    .tech-item i {
+        font-size: 1.8rem;
+    }
+}
+
+/* Tablet Portrait (481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2.5rem 1.5rem;
+    }
+
+    .hero h2 {
+        font-size: 2.2rem;
+    }
+
+    .hero p {
+        font-size: 1.1rem;
+    }
+
+    .hero-image img {
+        max-height: 280px;
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .results-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .tips-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .climate-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .question-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tech-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .developer-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .chat-messages {
+        height: 350px;
+    }
+}
+
+/* Tablet Landscape & Small Desktop (769px to 1024px) */
+@media (min-width: 769px) {
+    /* Show desktop navigation */
+    .nav-links {
+        display: flex;
+    }
+
+    .nav-actions {
+        display: flex;
+    }
+
+    .mobile-menu-toggle {
+        display: none;
+    }
+
+    .mobile-menu {
+        display: none !important;
+    }
+
+    .container {
+        padding: 0 2rem;
+    }
+
+    .nav-container {
+        padding: 1rem 2rem;
+        gap: 2rem;
+    }
+
+    .brand-text {
+        font-size: 1.5rem;
+    }
+
+    .brand-icon {
+        font-size: 1.75rem;
+    }
+
+    .hero {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        text-align: left;
+        padding: 4rem 2rem;
+        margin: 2rem 0;
+    }
+
+    .hero h2 {
+        font-size: 2.5rem;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+    }
+
+    .hero-stats {
+        justify-content: flex-start;
+    }
+
+    .hero-image img {
+        max-height: 350px;
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .results-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .breakdown-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .progress-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .tips-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .climate-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .question-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tech-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .developer-content {
+        grid-template-columns: auto 1fr;
+        text-align: left;
+        gap: 2rem;
+    }
+
+    .developer-photo {
+        width: 160px;
+        height: 160px;
+    }
+
+    .developer-name {
+        font-size: 2rem;
+    }
+
+    .developer-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .actions {
+        flex-direction: row;
+    }
+
+    .chat-messages {
+        height: 400px;
+    }
+
+    .cta-button, .calculate-btn, .action-btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+}
+
+/* Large Desktop (1025px and up) */
+@media (min-width: 1025px) {
+    .hero {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        padding: 4rem 0;
+    }
+
+    .hero h2 {
+        font-size: 3rem;
+    }
+
+    .hero-image img {
+        max-height: 400px;
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .results-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .breakdown-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .tips-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .climate-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .question-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tech-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .developer-photo {
+        width: 200px;
+        height: 200px;
+    }
+
+    .developer-name {
+        font-size: 2.2rem;
+    }
+
+    .developer-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Ultra-wide screens (1400px and up) */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1400px;
+        padding: 0 3rem;
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3rem;
+    }
+
+    .tips-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .climate-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero-image img,
+    .developer-photo {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
     }
 }
 
@@ -2235,14 +2723,51 @@ footer p {
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
-    margin: 2rem;
-    padding: 2.5rem;
+    margin: 1rem;
+    padding: 2rem;
     background: rgba(15, 23, 42, 0.95);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(0, 245, 255, 0.15);
     border-radius: 20px;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
     animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Modal responsive styles */
+@media (max-width: 480px) {
+    .modal-container {
+        width: 95%;
+        margin: 0.5rem;
+        padding: 1.5rem;
+        max-height: 95vh;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .modal-container .form-group input {
+        padding: 0.875rem 1rem 0.875rem 2.5rem;
+        font-size: 0.9rem;
+    }
+
+    .modal-container .form-group .input-icon {
+        left: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .modal-container .auth-btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .modal-container {
+        max-width: 480px;
+        padding: 2.5rem;
+    }
 }
 
 .modal-close {
@@ -2617,16 +3142,6 @@ footer p {
         box-shadow: 0 0 25px rgba(0, 245, 255, 0.4);
     }
 
-    .modal-container {
-        width: 95%;
-        margin: 1rem;
-        max-height: 95vh;
-    }
-
-    .modal-title {
-        font-size: 1.75rem;
-    }
-
     /* Show auth buttons in mobile menu */
     .mobile-auth {
         display: flex !important;
@@ -2637,28 +3152,84 @@ footer p {
         border-top: 1px solid rgba(0, 245, 255, 0.2);
         margin-top: 1rem;
     }
-
-    .modal-container {
-        width: 95%;
-        margin: 1rem;
-        max-height: 95vh;
-    }
-
-    .modal-title {
-        font-size: 1.75rem;
-    }
 }
 
+/* Additional mobile optimizations */
 @media (max-width: 480px) {
-    .nav-container {
-        padding: 0.75rem 1rem;
+    /* Ensure proper viewport behavior */
+    body {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
     }
 
-    .brand-text {
+    /* Improve tap targets */
+    .nav-item,
+    .mobile-nav-item,
+    .question-buttons button {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Better form spacing */
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    /* Improved typography scaling */
+    h2 {
+        font-size: 1.5rem;
+        line-height: 1.2;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    h4 {
         font-size: 1.1rem;
     }
 
-    .brand-icon {
-        font-size: 1.25rem;
+    /* Better spacing for cards */
+    .feature-card,
+    .progress-card,
+    .result-card,
+    .tip-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .mobile-menu,
+    .floating-elements,
+    .chat-container,
+    .quick-questions {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .hero,
+    .feature-card,
+    .progress-card {
+        background: white !important;
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
     }
 } 

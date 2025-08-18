@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>🌱 ClimateGuardian - Reduce Your Carbon Footprint</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,7 +54,7 @@
                     </div>
                 </div>
                 
-                <button class="mobile-menu-toggle" id="mobile-toggle">
+                <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
@@ -167,7 +171,7 @@
                         </div>
                         <div class="form-group">
                             <label>Weekly kilometers traveled:</label>
-                            <input type="number" id="weekly-km" min="0" placeholder="e.g., 100" required>
+                            <input type="number" id="weekly-km" min="0" step="1" placeholder="e.g., 100" inputmode="numeric" pattern="[0-9]*" required>
                         </div>
                     </div>
 
@@ -175,11 +179,11 @@
                         <h3><i class="fas fa-bolt"></i> Energy Usage</h3>
                         <div class="form-group">
                             <label>Monthly electricity usage (kWh):</label>
-                            <input type="number" id="electricity" min="0" placeholder="e.g., 250" required>
+                            <input type="number" id="electricity" min="0" step="1" placeholder="e.g., 250" inputmode="numeric" pattern="[0-9]*" required>
                         </div>
                         <div class="form-group">
                             <label>Monthly gas usage (m³):</label>
-                            <input type="number" id="gas" min="0" placeholder="e.g., 50" required>
+                            <input type="number" id="gas" min="0" step="1" placeholder="e.g., 50" inputmode="numeric" pattern="[0-9]*" required>
                         </div>
                     </div>
 
@@ -267,8 +271,8 @@
                         </div>
                     </div>
                     <div class="chat-input-container">
-                        <input type="text" id="chat-input" placeholder="Ask me about climate-friendly practices..." maxlength="500">
-                        <button id="send-btn" onclick="sendMessage()">
+                        <input type="text" id="chat-input" placeholder="Ask me about climate-friendly practices..." maxlength="500" autocomplete="off" autocorrect="on" autocapitalize="sentences">
+                        <button id="send-btn" onclick="sendMessage()" aria-label="Send message">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
@@ -691,22 +695,94 @@
             logoutBtn.addEventListener('click', handleLogout);
         }
         
-        // Mobile menu toggle
-        const mobileToggle = document.getElementById('mobile-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (mobileToggle && mobileMenu) {
-            mobileToggle.addEventListener('click', () => {
-                mobileToggle.classList.toggle('active');
-                mobileMenu.classList.toggle('active');
-            });
+        // Enhanced Mobile menu toggle
+        function setupMobileMenu() {
+            const mobileToggle = document.getElementById('mobile-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            console.log('Setting up mobile menu:', { mobileToggle, mobileMenu });
+            
+            if (mobileToggle && mobileMenu) {
+                // Remove any existing event listeners
+                mobileToggle.replaceWith(mobileToggle.cloneNode(true));
+                const newMobileToggle = document.getElementById('mobile-toggle');
+                
+                // Toggle mobile menu
+                newMobileToggle.addEventListener('click', (e) => {
+                    console.log('Mobile toggle clicked');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isActive = newMobileToggle.classList.contains('active');
+                    
+                    if (isActive) {
+                        newMobileToggle.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        newMobileToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    } else {
+                        newMobileToggle.classList.add('active');
+                        mobileMenu.classList.add('active');
+                        newMobileToggle.setAttribute('aria-expanded', 'true');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!mobileMenu.contains(e.target) && !newMobileToggle.contains(e.target)) {
+                        newMobileToggle.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        newMobileToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                // Close mobile menu on escape key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                        newMobileToggle.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        newMobileToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                console.log('Mobile menu setup complete');
+            } else {
+                console.error('Mobile menu elements not found');
+            }
         }
+        
+        // Call the setup function
+        setupMobileMenu();
         
         // Close mobile menu when clicking nav items
         document.querySelectorAll('.mobile-nav-item').forEach(item => {
             item.addEventListener('click', () => {
-                mobileToggle.classList.remove('active');
-                mobileMenu.classList.remove('active');
+                const mobileToggle = document.getElementById('mobile-toggle');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileToggle && mobileMenu) {
+                    mobileToggle.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
             });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                const mobileToggle = document.getElementById('mobile-toggle');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileToggle && mobileMenu) {
+                    mobileToggle.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
         });
 
         // Add slide in animation
