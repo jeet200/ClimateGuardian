@@ -683,6 +683,11 @@
                     `;
                 }
             }
+            
+            // Reload daily actions to update authentication state
+            if (typeof loadDailyActions === 'function') {
+                loadDailyActions();
+            }
         }
 
         // Handle logout for both desktop and mobile

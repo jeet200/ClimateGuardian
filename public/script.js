@@ -384,9 +384,15 @@ function showAuthenticationPrompt(message) {
 function displayDailyActions(actions, authenticated = false) {
   const container = document.getElementById("daily-actions");
   
-  // Clear only the actions, not the auth prompt
+  // Clear existing actions
   const existingActions = container.querySelectorAll('.action-item');
   existingActions.forEach(item => item.remove());
+  
+  // Remove auth prompt if user is authenticated
+  if (authenticated) {
+    const existingPrompts = container.querySelectorAll('.auth-prompt');
+    existingPrompts.forEach(prompt => prompt.remove());
+  }
 
   actions.forEach((action) => {
     const actionDiv = document.createElement("div");
