@@ -1,651 +1,832 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <title>🌱 ClimateGuardian - Reduce Your Carbon Footprint</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="nav-brand">
-                    <div class="brand-icon">🌱</div>
-                    <h1 class="brand-text">ClimateGuardian</h1>
-                </div>
-                
-                <ul class="nav-links">
-                    <li><a href="#home" class="nav-item active">Home</a></li>
-                    <li><a href="#calculator" class="nav-item">Calculator</a></li>
-                    <li><a href="#chat" class="nav-item">AI Chat</a></li>
-                    <li><a href="#progress" class="nav-item">Progress</a></li>
-                    <li><a href="#tips" class="nav-item">Daily Tips</a></li>
-                    <li><a href="#developer" class="nav-item">Developer</a></li>
-                </ul>
-                
-                <div class="nav-actions">
-                    <button class="btn-login" id="login-btn" onclick="showLoginModal()">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>Login</span>
-                    </button>
-                    <button class="btn-signup" id="signup-btn" onclick="showSignupModal()">
-                        <i class="fas fa-user-plus"></i>
-                        <span>Sign Up</span>
-                    </button>
-                    <div class="user-menu hidden" id="user-menu">
-                        <div class="user-info">
-                            <i class="fas fa-user-circle"></i>
-                            <span id="user-display-name">Welcome</span>
-                        </div>
-                        <button class="btn-logout" id="logout-btn">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
-                        </button>
-                    </div>
-                </div>
-                
-                <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
-                    <span class="hamburger-line"></span>
-                    <span class="hamburger-line"></span>
-                    <span class="hamburger-line"></span>
-                </button>
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-brand">
+            <div class="brand-icon">🌱</div>
+            <h1 class="brand-text">ClimateGuardian</h1>
+          </div>
+
+          <ul class="nav-links">
+            <li><a href="#home" class="nav-item active">Home</a></li>
+            <li><a href="#calculator" class="nav-item">Calculator</a></li>
+            <li><a href="#chat" class="nav-item">AI Chat</a></li>
+            <li><a href="#progress" class="nav-item">Progress</a></li>
+            <li><a href="#tips" class="nav-item">Daily Tips</a></li>
+            <li><a href="#developer" class="nav-item">Developer</a></li>
+          </ul>
+
+          <div class="nav-actions">
+            <button class="btn-login" id="login-btn" onclick="showLoginModal()">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Login</span>
+            </button>
+            <button
+              class="btn-signup"
+              id="signup-btn"
+              onclick="showSignupModal()"
+            >
+              <i class="fas fa-user-plus"></i>
+              <span>Sign Up</span>
+            </button>
+            <div class="user-menu hidden" id="user-menu">
+              <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span id="user-display-name">Welcome</span>
+              </div>
+              <button class="btn-logout" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+              </button>
             </div>
-            
-            <!-- Mobile Menu -->
-            <div class="mobile-menu" id="mobile-menu">
-                <div class="mobile-nav-links">
-                    <a href="#home" class="mobile-nav-item active">Home</a>
-                    <a href="#calculator" class="mobile-nav-item">Calculator</a>
-                    <a href="#chat" class="mobile-nav-item">AI Chat</a>
-                    <a href="#progress" class="mobile-nav-item">Progress</a>
-                    <a href="#tips" class="mobile-nav-item">Daily Tips</a>
-                    <a href="#developer" class="mobile-nav-item">Developer</a>
-                </div>
-                <div class="mobile-auth">
-                    <button class="mobile-btn-login" onclick="showLoginModal()">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>Login</span>
-                    </button>
-                    <button class="mobile-btn-signup" onclick="showSignupModal()">
-                        <i class="fas fa-user-plus"></i>
-                        <span>Sign Up</span>
-                    </button>
-                    <div class="mobile-user-menu hidden" id="mobile-user-menu">
-                        <div class="mobile-user-info">
-                            <i class="fas fa-user-circle"></i>
-                            <span id="mobile-user-name">Welcome</span>
-                        </div>
-                        <button class="mobile-btn-logout" id="mobile-logout-btn">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
-                        </button>
-                    </div>
-                </div>
+          </div>
+
+          <button
+            class="mobile-menu-toggle"
+            id="mobile-toggle"
+            aria-label="Toggle mobile menu"
+            aria-expanded="false"
+          >
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobile-menu">
+          <div class="mobile-nav-links">
+            <a href="#home" class="mobile-nav-item active">Home</a>
+            <a href="#calculator" class="mobile-nav-item">Calculator</a>
+            <a href="#chat" class="mobile-nav-item">AI Chat</a>
+            <a href="#progress" class="mobile-nav-item">Progress</a>
+            <a href="#tips" class="mobile-nav-item">Daily Tips</a>
+            <a href="#developer" class="mobile-nav-item">Developer</a>
+          </div>
+          <div class="mobile-auth">
+            <button class="mobile-btn-login" onclick="showLoginModal()">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Login</span>
+            </button>
+            <button class="mobile-btn-signup" onclick="showSignupModal()">
+              <i class="fas fa-user-plus"></i>
+              <span>Sign Up</span>
+            </button>
+            <div class="mobile-user-menu hidden" id="mobile-user-menu">
+              <div class="mobile-user-info">
+                <i class="fas fa-user-circle"></i>
+                <span id="mobile-user-name">Welcome</span>
+              </div>
+              <button class="mobile-btn-logout" id="mobile-logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+              </button>
             </div>
-        </nav>
+          </div>
+        </div>
+      </nav>
     </header>
 
     <main>
-        <!-- Home Page -->
-        <section id="home" class="page active">
-            <div class="hero">
-                <div class="hero-content">
-                    <h2>Take Action Against Climate Change</h2>
-                    <p>Understand your carbon footprint and take meaningful steps to reduce it with personalized AI guidance.</p>
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <i class="fas fa-thermometer-half"></i>
-                            <span>Global temp increased by 1.1°C</span>
-                        </div>
-                        <div class="stat">
-                            <i class="fas fa-smog"></i>
-                            <span>CO₂ levels at 421 ppm</span>
-                        </div>
-                        <div class="stat">
-                            <i class="fas fa-clock"></i>
-                            <span>Every second counts</span>
-                        </div>
-                    </div>
-                    <button class="cta-button" onclick="showPage('calculator')">
-                        Calculate My Footprint
-                    </button>
-                </div>
-                <div class="hero-image">
-                    <img src="wallper.png" alt="Climate Action Background" />
-                </div>
+      <!-- Home Page -->
+      <section id="home" class="page active">
+        <div class="hero">
+          <div class="hero-content">
+            <h2>Take Action Against Climate Change</h2>
+            <p>
+              Understand your carbon footprint and take meaningful steps to
+              reduce it with personalized AI guidance.
+            </p>
+            <div class="hero-stats">
+              <div class="stat">
+                <i class="fas fa-thermometer-half"></i>
+                <span>Global temp increased by 1.1°C</span>
+              </div>
+              <div class="stat">
+                <i class="fas fa-smog"></i>
+                <span>CO₂ levels at 421 ppm</span>
+              </div>
+              <div class="stat">
+                <i class="fas fa-clock"></i>
+                <span>Every second counts</span>
+              </div>
             </div>
-            
-            <div class="features">
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <i class="fas fa-calculator"></i>
-                        <h3>Carbon Calculator</h3>
-                        <p>Calculate your monthly CO₂ emissions from transport, energy, diet, and consumption.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-robot"></i>
-                        <h3>AI Assistant</h3>
-                        <p>Get personalized climate advice from our AI-powered ClimateBot.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-chart-line"></i>
-                        <h3>Progress Tracking</h3>
-                        <p>Monitor your carbon footprint reduction over time with visual progress tracking.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-tasks"></i>
-                        <h3>Daily Actions</h3>
-                        <p>Complete simple daily eco-actions to build sustainable habits.</p>
-                    </div>
-                </div>
+            <button class="cta-button" onclick="showPage('calculator')">
+              Calculate My Footprint
+            </button>
+          </div>
+          <div class="hero-image">
+            <img src="wallper.png" alt="Climate Action Background" />
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="feature-grid">
+            <div class="feature-card">
+              <i class="fas fa-calculator"></i>
+              <h3>Carbon Calculator</h3>
+              <p>
+                Calculate your monthly CO₂ emissions from transport, energy,
+                diet, and consumption.
+              </p>
             </div>
-        </section>
-
-        <!-- Calculator Page -->
-        <section id="calculator" class="page">
-            <div class="container">
-                <h2>🧮 Carbon Footprint Calculator</h2>
-                <p class="subtitle">Calculate your monthly CO₂ emissions</p>
-                
-                <form id="carbon-form" class="calculator-form">
-                    <div class="form-section">
-                        <h3><i class="fas fa-car"></i> Transportation</h3>
-                        <div class="form-group">
-                            <label>Primary transport method:</label>
-                            <select id="transport-type" required>
-                                <option value="car">Car</option>
-                                <option value="public">Public Transport</option>
-                                <option value="bike">Bicycle</option>
-                                <option value="walk">Walking</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Weekly kilometers traveled:</label>
-                            <input type="number" id="weekly-km" min="0" step="1" placeholder="e.g., 100" inputmode="numeric" pattern="[0-9]*" required>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <h3><i class="fas fa-bolt"></i> Energy Usage</h3>
-                        <div class="form-group">
-                            <label>Monthly electricity usage (kWh):</label>
-                            <input type="number" id="electricity" min="0" step="1" placeholder="e.g., 250" inputmode="numeric" pattern="[0-9]*" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Monthly gas usage (m³):</label>
-                            <input type="number" id="gas" min="0" step="1" placeholder="e.g., 50" inputmode="numeric" pattern="[0-9]*" required>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <h3><i class="fas fa-utensils"></i> Diet</h3>
-                        <div class="form-group">
-                            <label>Dietary preference:</label>
-                            <select id="diet-type" required>
-                                <option value="vegan">Vegan</option>
-                                <option value="vegetarian">Vegetarian</option>
-                                <option value="mixed">Mixed (some meat)</option>
-                                <option value="meat_heavy">Meat-heavy</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <h3><i class="fas fa-shopping-cart"></i> Consumption</h3>
-                        <div class="form-group">
-                            <label>Shopping/consumption level:</label>
-                            <select id="consumption-level" required>
-                                <option value="low">Low (minimal shopping)</option>
-                                <option value="moderate">Moderate (regular shopping)</option>
-                                <option value="high">High (frequent shopping)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="calculate-btn">Calculate My Footprint</button>
-                </form>
-
-                <div id="results" class="results hidden">
-                    <h3>Your Carbon Footprint Results</h3>
-                    <div class="results-grid">
-                        <div class="result-card primary">
-                            <h4>Monthly Footprint</h4>
-                            <span id="monthly-result">-- kg CO₂</span>
-                        </div>
-                        <div class="result-card">
-                            <h4>Annual Footprint</h4>
-                            <span id="annual-result">-- kg CO₂</span>
-                        </div>
-                    </div>
-                    <div class="breakdown">
-                        <h4>Breakdown by Category</h4>
-                        <div class="breakdown-grid">
-                            <div class="breakdown-item">
-                                <span>Transport</span>
-                                <span id="transport-breakdown">-- kg</span>
-                            </div>
-                            <div class="breakdown-item">
-                                <span>Energy</span>
-                                <span id="energy-breakdown">-- kg</span>
-                            </div>
-                            <div class="breakdown-item">
-                                <span>Diet</span>
-                                <span id="diet-breakdown">-- kg</span>
-                            </div>
-                            <div class="breakdown-item">
-                                <span>Consumption</span>
-                                <span id="consumption-breakdown">-- kg</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="actions">
-                        <button onclick="showPage('chat')" class="action-btn">Get AI Advice</button>
-                        <button onclick="showPage('tips')" class="action-btn">See Daily Tips</button>
-                    </div>
-                </div>
+            <div class="feature-card">
+              <i class="fas fa-robot"></i>
+              <h3>AI Assistant</h3>
+              <p>
+                Get personalized climate advice from our AI-powered ClimateBot.
+              </p>
             </div>
-        </section>
-
-        <!-- Chat Page -->
-        <section id="chat" class="page">
-            <div class="container">
-                <h2>🤖 ClimateBot - AI Assistant</h2>
-                <p class="subtitle">Ask me anything about reducing your carbon footprint!</p>
-                
-                <div class="chat-container">
-                    <div id="chat-messages" class="chat-messages">
-                        <div class="message bot">
-                            <div class="message-content">
-                                <p>Hello! I'm ClimateBot, your AI assistant for sustainable living. Ask me anything about reducing your carbon footprint, saving energy, or living more sustainably!</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-input-container">
-                        <input type="text" id="chat-input" placeholder="Ask me about climate-friendly practices..." maxlength="500" autocomplete="off" autocorrect="on" autocapitalize="sentences">
-                        <button id="send-btn" onclick="sendMessage()" aria-label="Send message">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="quick-questions">
-                    <h4>Quick Questions:</h4>
-                    <div class="question-buttons">
-                        <button onclick="askQuickQuestion('How can I reduce my electricity bill?')">💡 Reduce Electricity</button>
-                        <button onclick="askQuickQuestion('What\'s the greenest way to commute?')">🚲 Green Commute</button>
-                        <button onclick="askQuickQuestion('How does eating meat affect the environment?')">🥩 Diet Impact</button>
-                        <button onclick="askQuickQuestion('How can I reduce food waste?')">🍎 Food Waste</button>
-                    </div>
-                </div>
+            <div class="feature-card">
+              <i class="fas fa-chart-line"></i>
+              <h3>Progress Tracking</h3>
+              <p>
+                Monitor your carbon footprint reduction over time with visual
+                progress tracking.
+              </p>
             </div>
-        </section>
-
-        <!-- Progress Page -->
-        <section id="progress" class="page">
-            <div class="container">
-                <h2>📊 Your Progress</h2>
-                <p class="subtitle">Track your carbon footprint reduction over time</p>
-                
-                <div class="progress-grid">
-                    <div class="progress-card">
-                        <h3>Monthly Footprint</h3>
-                        <canvas id="footprint-chart"></canvas>
-                    </div>
-                    <div class="progress-card">
-                        <h3>Daily Actions Streak</h3>
-                        <canvas id="streak-chart"></canvas>
-                        <div class="streak-stats">
-                            <div class="streak-stat">
-                                <span class="stat-label">Current Streak</span>
-                                <span class="stat-value" id="current-streak-stat">0</span>
-                            </div>
-                            <div class="streak-stat">
-                                <span class="stat-label">Longest Streak</span>
-                                <span class="stat-value" id="longest-streak-stat">0</span>
-                            </div>
-                            <div class="streak-stat">
-                                <span class="stat-label">Total Actions</span>
-                                <span class="stat-value" id="total-actions-stat">0</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="progress-grid">
-                    <div class="progress-card">
-                        <h3>Achievements</h3>
-                        <div id="achievements" class="achievements">
-                            <div class="achievement">
-                                <i class="fas fa-seedling"></i>
-                                <span>First Calculation</span>
-                            </div>
-                            <div class="achievement locked">
-                                <i class="fas fa-star"></i>
-                                <span>Week Streak</span>
-                            </div>
-                            <div class="achievement locked">
-                                <i class="fas fa-trophy"></i>
-                                <span>Month Streak</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="progress-card">
-                        <h3>Monthly Summary</h3>
-                        <div class="monthly-summary">
-                            <div class="summary-stat">
-                                <i class="fas fa-calendar-check"></i>
-                                <span>Days Completed: <span id="days-completed">0</span></span>
-                            </div>
-                            <div class="summary-stat">
-                                <i class="fas fa-percentage"></i>
-                                <span>Success Rate: <span id="success-rate">0%</span></span>
-                            </div>
-                            <div class="summary-stat">
-                                <i class="fas fa-chart-line"></i>
-                                <span>Trend: <span id="trend">-</span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="climate-info">
-                    <h3>🌍 Local Climate Data</h3>
-                    <div id="climate-data" class="climate-grid">
-                        <div class="climate-item">
-                            <span>Loading climate data...</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="feature-card">
+              <i class="fas fa-tasks"></i>
+              <h3>Daily Actions</h3>
+              <p>
+                Complete simple daily eco-actions to build sustainable habits.
+              </p>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <!-- Tips Page -->
-        <section id="tips" class="page">
-            <div class="container">
-                <h2>✅ Daily Eco-Actions</h2>
-                <p class="subtitle">Complete simple actions to reduce your carbon footprint</p>
-                
-                <div class="tips-header">
-                    <div class="streak-counter">
-                        <i class="fas fa-fire"></i>
-                        <span>Daily Streak: <span id="streak-count">0</span></span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 0%"></div>
-                    </div>
-                </div>
-                
-                <div id="daily-actions" class="actions-list">
-                    <div class="loading">Loading today's actions...</div>
-                </div>
-                
-                <div class="tips-summary">
-                    <h3>💡 Why These Actions Matter</h3>
-                    <div class="tips-grid">
-                        <div class="tip-card">
-                            <i class="fas fa-plug"></i>
-                            <h4>Energy Savings</h4>
-                            <p>Simple changes in energy usage can reduce your carbon footprint by 20-30%.</p>
-                        </div>
-                        <div class="tip-card">
-                            <i class="fas fa-leaf"></i>
-                            <h4>Sustainable Living</h4>
-                            <p>Small daily actions compound into significant environmental impact over time.</p>
-                        </div>
-                        <div class="tip-card">
-                            <i class="fas fa-recycle"></i>
-                            <h4>Waste Reduction</h4>
-                            <p>Reducing consumption and waste can cut your footprint by up to 40%.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+      <!-- Calculator Page -->
+      <section id="calculator" class="page">
+        <div class="container">
+          <h2>🧮 Carbon Footprint Calculator</h2>
+          <p class="subtitle">Calculate your monthly CO₂ emissions</p>
 
-        <!-- Developer Info Section -->
-        <section id="developer" class="page">
-            <div class="container">
-                <h2>👨‍💻 Meet the Developer</h2>
-                <p class="subtitle">Built with passion for a sustainable future</p>
-                
-                <div class="developer-card">
-                    <div class="developer-content">
-                        <div class="developer-avatar">
-                            <img src="developer-photo.jpg" alt="Jeet Upadhyay - Developer" class="developer-photo">
-                        </div>
-                        <div class="developer-info">
-                            <h3 class="developer-name">Jeet Upadhyay</h3>
-                            <p class="developer-title">Full Stack Developer</p>
-                            <p class="developer-description">
-                                Passionate about creating innovative solutions that combine technology with environmental sustainability. 
-                                This ClimateGuardian platform represents the fusion of cutting-edge web development and climate consciousness.
-                            </p>
-                            
-                            <div class="developer-links">
-                                <a href="https://github.com/jeet200" target="_blank" rel="noopener noreferrer" class="dev-link github">
-                                    <i class="fab fa-github"></i>
-                                    <span>GitHub</span>
-                                </a>
-                                <a href="https://www.linkedin.com/in/jeet-upadhyay-a0385523a/" target="_blank" rel="noopener noreferrer" class="dev-link linkedin">
-                                    <i class="fab fa-linkedin"></i>
-                                    <span>LinkedIn</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="developer-stats">
-                        <div class="stat-item">
-                            <i class="fas fa-code"></i>
-                            <span>Full Stack Development</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-leaf"></i>
-                            <span>Environmental Tech</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-rocket"></i>
-                            <span>Innovation Focused</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tech-stack">
-                    <h3>🛠️ Tech Stack Used</h3>
-                    <div class="tech-grid">
-                        <div class="tech-item">
-                            <i class="fab fa-html5"></i>
-                            <span>HTML5</span>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fab fa-css3-alt"></i>
-                            <span>CSS3</span>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fab fa-js"></i>
-                            <span>JavaScript</span>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fab fa-node-js"></i>
-                            <span>Node.js</span>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fas fa-brain"></i>
-                            <span>Gemini AI</span>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fas fa-chart-line"></i>
-                            <span>Chart.js</span>
-                        </div>
-                    </div>
-                </div>
+          <form id="carbon-form" class="calculator-form">
+            <div class="form-section">
+              <h3><i class="fas fa-car"></i> Transportation</h3>
+              <div class="form-group">
+                <label>Primary transport method:</label>
+                <select id="transport-type" required>
+                  <option value="car">Car</option>
+                  <option value="public">Public Transport</option>
+                  <option value="bike">Bicycle</option>
+                  <option value="walk">Walking</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Weekly kilometers traveled:</label>
+                <input
+                  type="number"
+                  id="weekly-km"
+                  min="0"
+                  step="1"
+                  placeholder="e.g., 100"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  required
+                />
+              </div>
             </div>
-        </section>
+
+            <div class="form-section">
+              <h3><i class="fas fa-bolt"></i> Energy Usage</h3>
+              <div class="form-group">
+                <label>Monthly electricity usage (kWh):</label>
+                <input
+                  type="number"
+                  id="electricity"
+                  min="0"
+                  step="1"
+                  placeholder="e.g., 250"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Monthly gas usage (m³):</label>
+                <input
+                  type="number"
+                  id="gas"
+                  min="0"
+                  step="1"
+                  placeholder="e.g., 50"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3><i class="fas fa-utensils"></i> Diet</h3>
+              <div class="form-group">
+                <label>Dietary preference:</label>
+                <select id="diet-type" required>
+                  <option value="vegan">Vegan</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="mixed">Mixed (some meat)</option>
+                  <option value="meat_heavy">Meat-heavy</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3><i class="fas fa-shopping-cart"></i> Consumption</h3>
+              <div class="form-group">
+                <label>Shopping/consumption level:</label>
+                <select id="consumption-level" required>
+                  <option value="low">Low (minimal shopping)</option>
+                  <option value="moderate">Moderate (regular shopping)</option>
+                  <option value="high">High (frequent shopping)</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="calculate-btn">
+              Calculate My Footprint
+            </button>
+          </form>
+
+          <div id="results" class="results hidden">
+            <h3>Your Carbon Footprint Results</h3>
+            <div class="results-grid">
+              <div class="result-card primary">
+                <h4>Monthly Footprint</h4>
+                <span id="monthly-result">-- kg CO₂</span>
+              </div>
+              <div class="result-card">
+                <h4>Annual Footprint</h4>
+                <span id="annual-result">-- kg CO₂</span>
+              </div>
+            </div>
+            <div class="breakdown">
+              <h4>Breakdown by Category</h4>
+              <div class="breakdown-grid">
+                <div class="breakdown-item">
+                  <span>Transport</span>
+                  <span id="transport-breakdown">-- kg</span>
+                </div>
+                <div class="breakdown-item">
+                  <span>Energy</span>
+                  <span id="energy-breakdown">-- kg</span>
+                </div>
+                <div class="breakdown-item">
+                  <span>Diet</span>
+                  <span id="diet-breakdown">-- kg</span>
+                </div>
+                <div class="breakdown-item">
+                  <span>Consumption</span>
+                  <span id="consumption-breakdown">-- kg</span>
+                </div>
+              </div>
+            </div>
+            <div class="actions">
+              <button onclick="showPage('chat')" class="action-btn">
+                Get AI Advice
+              </button>
+              <button onclick="showPage('tips')" class="action-btn">
+                See Daily Tips
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chat Page -->
+      <section id="chat" class="page">
+        <div class="container">
+          <h2>🤖 ClimateBot - AI Assistant</h2>
+          <p class="subtitle">
+            Ask me anything about reducing your carbon footprint!
+          </p>
+
+          <div class="chat-container">
+            <div id="chat-messages" class="chat-messages">
+              <div class="message bot">
+                <div class="message-content">
+                  <p>
+                    Hello! I'm ClimateBot, your AI assistant for sustainable
+                    living. Ask me anything about reducing your carbon
+                    footprint, saving energy, or living more sustainably!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input-container">
+              <input
+                type="text"
+                id="chat-input"
+                placeholder="Ask me about climate-friendly practices..."
+                maxlength="500"
+                autocomplete="off"
+                autocorrect="on"
+                autocapitalize="sentences"
+              />
+              <button
+                id="send-btn"
+                onclick="sendMessage()"
+                aria-label="Send message"
+              >
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="quick-questions">
+            <h4>Quick Questions:</h4>
+            <div class="question-buttons">
+              <button
+                onclick="askQuickQuestion('How can I reduce my electricity bill?')"
+              >
+                💡 Reduce Electricity
+              </button>
+              <button
+                onclick="askQuickQuestion('What\'s the greenest way to commute?')"
+              >
+                🚲 Green Commute
+              </button>
+              <button
+                onclick="askQuickQuestion('How does eating meat affect the environment?')"
+              >
+                🥩 Diet Impact
+              </button>
+              <button
+                onclick="askQuickQuestion('How can I reduce food waste?')"
+              >
+                🍎 Food Waste
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Progress Page -->
+      <section id="progress" class="page">
+        <div class="container">
+          <h2>📊 Your Progress</h2>
+          <p class="subtitle">
+            Track your carbon footprint reduction over time
+          </p>
+
+          <div class="progress-grid">
+            <div class="progress-card">
+              <h3>Monthly Footprint</h3>
+              <canvas id="footprint-chart"></canvas>
+            </div>
+            <div class="progress-card">
+              <h3>Daily Actions Streak</h3>
+              <canvas id="streak-chart"></canvas>
+              <div class="streak-stats">
+                <div class="streak-stat">
+                  <span class="stat-label">Current Streak</span>
+                  <span class="stat-value" id="current-streak-stat">0</span>
+                </div>
+                <div class="streak-stat">
+                  <span class="stat-label">Longest Streak</span>
+                  <span class="stat-value" id="longest-streak-stat">0</span>
+                </div>
+                <div class="streak-stat">
+                  <span class="stat-label">Total Actions</span>
+                  <span class="stat-value" id="total-actions-stat">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="progress-grid">
+            <div class="progress-card">
+              <h3>Achievements</h3>
+              <div id="achievements" class="achievements">
+                <div class="achievement">
+                  <i class="fas fa-seedling"></i>
+                  <span>First Calculation</span>
+                </div>
+                <div class="achievement locked">
+                  <i class="fas fa-star"></i>
+                  <span>Week Streak</span>
+                </div>
+                <div class="achievement locked">
+                  <i class="fas fa-trophy"></i>
+                  <span>Month Streak</span>
+                </div>
+              </div>
+            </div>
+            <div class="progress-card">
+              <h3>Monthly Summary</h3>
+              <div class="monthly-summary">
+                <div class="summary-stat">
+                  <i class="fas fa-calendar-check"></i>
+                  <span
+                    >Days Completed: <span id="days-completed">0</span></span
+                  >
+                </div>
+                <div class="summary-stat">
+                  <i class="fas fa-percentage"></i>
+                  <span>Success Rate: <span id="success-rate">0%</span></span>
+                </div>
+                <div class="summary-stat">
+                  <i class="fas fa-chart-line"></i>
+                  <span>Trend: <span id="trend">-</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="climate-info">
+            <h3>🌍 Local Climate Data</h3>
+            <div id="climate-data" class="climate-grid">
+              <div class="climate-item">
+                <span>Loading climate data...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tips Page -->
+      <section id="tips" class="page">
+        <div class="container">
+          <h2>✅ Daily Eco-Actions</h2>
+          <p class="subtitle">
+            Complete simple actions to reduce your carbon footprint
+          </p>
+
+          <div class="tips-header">
+            <div class="streak-counter">
+              <i class="fas fa-fire"></i>
+              <span>Daily Streak: <span id="streak-count">0</span></span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div id="daily-actions" class="actions-list">
+            <div class="loading">Loading today's actions...</div>
+          </div>
+
+          <div class="tips-summary">
+            <h3>💡 Why These Actions Matter</h3>
+            <div class="tips-grid">
+              <div class="tip-card">
+                <i class="fas fa-plug"></i>
+                <h4>Energy Savings</h4>
+                <p>
+                  Simple changes in energy usage can reduce your carbon
+                  footprint by 20-30%.
+                </p>
+              </div>
+              <div class="tip-card">
+                <i class="fas fa-leaf"></i>
+                <h4>Sustainable Living</h4>
+                <p>
+                  Small daily actions compound into significant environmental
+                  impact over time.
+                </p>
+              </div>
+              <div class="tip-card">
+                <i class="fas fa-recycle"></i>
+                <h4>Waste Reduction</h4>
+                <p>
+                  Reducing consumption and waste can cut your footprint by up to
+                  40%.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Developer Info Section -->
+      <section id="developer" class="page">
+        <div class="container">
+          <h2>👨‍💻 Meet the Developer</h2>
+          <p class="subtitle">Built with passion for a sustainable future</p>
+
+          <div class="developer-card">
+            <div class="developer-content">
+              <div class="developer-avatar">
+                <img
+                  src="developer-photo.jpg"
+                  alt="Uttam Solanki - Developer"
+                  class="developer-photo"
+                />
+              </div>
+              <div class="developer-info">
+                <h3 class="developer-name">Uttam Solanki</h3>
+                <p class="developer-title">Full Stack Developer</p>
+                <p class="developer-description">
+                  Passionate about creating innovative solutions that combine
+                  technology with environmental sustainability. This
+                  ClimateGuardian platform represents the fusion of cutting-edge
+                  web development and climate consciousness.
+                </p>
+
+                <div class="developer-links">
+                  <a
+                    href="https://github.com/jeet200"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="dev-link github"
+                  >
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/jeet-upadhyay-a0385523a/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="dev-link linkedin"
+                  >
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="developer-stats">
+              <div class="stat-item">
+                <i class="fas fa-code"></i>
+                <span>Full Stack Development</span>
+              </div>
+              <div class="stat-item">
+                <i class="fas fa-leaf"></i>
+                <span>Environmental Tech</span>
+              </div>
+              <div class="stat-item">
+                <i class="fas fa-rocket"></i>
+                <span>Innovation Focused</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-stack">
+            <h3>🛠️ Tech Stack Used</h3>
+            <div class="tech-grid">
+              <div class="tech-item">
+                <i class="fab fa-html5"></i>
+                <span>HTML5</span>
+              </div>
+              <div class="tech-item">
+                <i class="fab fa-css3-alt"></i>
+                <span>CSS3</span>
+              </div>
+              <div class="tech-item">
+                <i class="fab fa-js"></i>
+                <span>JavaScript</span>
+              </div>
+              <div class="tech-item">
+                <i class="fab fa-node-js"></i>
+                <span>Node.js</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-brain"></i>
+                <span>Gemini AI</span>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Chart.js</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2025 ClimateGuardian. Together for a sustainable future. 🌱</p>
-            <p class="developer-credit">
-                Developed with 💚 by <a href="#developer" class="dev-credit-link">Jeet Upadhyay</a>
-            </p>
-        </div>
+      <div class="container">
+        <p>
+          &copy; 2025 ClimateGuardian. Together for a sustainable future. 🌱
+        </p>
+        <p class="developer-credit">
+          Developed with 💚 by
+          <a href="#developer" class="dev-credit-link">Uttam Solanki</a>
+        </p>
+      </div>
     </footer>
 
     <!-- Login Modal -->
     <div id="loginModal" class="auth-modal hidden">
-        <div class="modal-overlay" onclick="closeModal('loginModal')"></div>
-        <div class="modal-container">
-            <button class="modal-close" onclick="closeModal('loginModal')">
-                <i class="fas fa-times"></i>
-            </button>
-            
-            <h2 class="modal-title">Welcome Back</h2>
-            
-            <form class="auth-form" id="loginForm">
-                <div class="form-group">
-                    <label for="loginEmail">Email Address</label>
-                    <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required autocomplete="email">
-                    <i class="fas fa-envelope input-icon"></i>
-                </div>
-                
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required autocomplete="current-password">
-                    <i class="fas fa-lock input-icon"></i>
-                </div>
+      <div class="modal-overlay" onclick="closeModal('loginModal')"></div>
+      <div class="modal-container">
+        <button class="modal-close" onclick="closeModal('loginModal')">
+          <i class="fas fa-times"></i>
+        </button>
 
-                <button type="submit" class="auth-btn">
-                    <div class="btn-content">
-                        <span class="btn-text">Sign In</span>
-                        <div class="loading-spinner"></div>
-                    </div>
-                </button>
-                
-                <div class="message" id="loginMessage"></div>
-                
-                <div class="auth-link">
-                    Don't have an account? <a href="#" onclick="switchToSignup()">Create Account</a>
-                </div>
-            </form>
-        </div>
+        <h2 class="modal-title">Welcome Back</h2>
+
+        <form class="auth-form" id="loginForm">
+          <div class="form-group">
+            <label for="loginEmail">Email Address</label>
+            <input
+              type="email"
+              id="loginEmail"
+              name="email"
+              placeholder="Enter your email"
+              required
+              autocomplete="email"
+            />
+            <i class="fas fa-envelope input-icon"></i>
+          </div>
+
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              name="password"
+              placeholder="Enter your password"
+              required
+              autocomplete="current-password"
+            />
+            <i class="fas fa-lock input-icon"></i>
+          </div>
+
+          <button type="submit" class="auth-btn">
+            <div class="btn-content">
+              <span class="btn-text">Sign In</span>
+              <div class="loading-spinner"></div>
+            </div>
+          </button>
+
+          <div class="message" id="loginMessage"></div>
+
+          <div class="auth-link">
+            Don't have an account?
+            <a href="#" onclick="switchToSignup()">Create Account</a>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Signup Modal -->
     <div id="signupModal" class="auth-modal hidden">
-        <div class="modal-overlay" onclick="closeModal('signupModal')"></div>
-        <div class="modal-container">
-            <button class="modal-close" onclick="closeModal('signupModal')">
+      <div class="modal-overlay" onclick="closeModal('signupModal')"></div>
+      <div class="modal-container">
+        <button class="modal-close" onclick="closeModal('signupModal')">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <h2 class="modal-title">Join Climate Guardian</h2>
+
+        <form class="auth-form" id="signupForm">
+          <div class="form-group">
+            <label for="signupName">Full Name</label>
+            <input
+              type="text"
+              id="signupName"
+              name="name"
+              placeholder="Enter your full name"
+              required
+              autocomplete="name"
+            />
+            <i class="fas fa-user input-icon"></i>
+          </div>
+
+          <div class="form-group">
+            <label for="signupEmail">Email Address</label>
+            <input
+              type="email"
+              id="signupEmail"
+              name="email"
+              placeholder="Enter your email"
+              required
+              autocomplete="email"
+            />
+            <i class="fas fa-envelope input-icon"></i>
+          </div>
+
+          <div class="form-group password-group">
+            <label for="signupPassword">Password</label>
+            <input
+              type="password"
+              id="signupPassword"
+              name="password"
+              placeholder="Create a strong password"
+              required
+              minlength="8"
+              autocomplete="new-password"
+            />
+            <i class="fas fa-lock input-icon"></i>
+            <div class="password-strength">
+              <div class="strength-bar"></div>
+            </div>
+            <div class="password-requirements">
+              <div class="requirement" id="req-length">
                 <i class="fas fa-times"></i>
-            </button>
-            
-            <h2 class="modal-title">Join Climate Guardian</h2>
-            
-            <form class="auth-form" id="signupForm">
-                <div class="form-group">
-                    <label for="signupName">Full Name</label>
-                    <input type="text" id="signupName" name="name" placeholder="Enter your full name" required autocomplete="name">
-                    <i class="fas fa-user input-icon"></i>
-                </div>
+                <span>At least 8 characters</span>
+              </div>
+              <div class="requirement" id="req-uppercase">
+                <i class="fas fa-times"></i>
+                <span>One uppercase letter</span>
+              </div>
+              <div class="requirement" id="req-lowercase">
+                <i class="fas fa-times"></i>
+                <span>One lowercase letter</span>
+              </div>
+              <div class="requirement" id="req-number">
+                <i class="fas fa-times"></i>
+                <span>One number</span>
+              </div>
+            </div>
+          </div>
 
-                <div class="form-group">
-                    <label for="signupEmail">Email Address</label>
-                    <input type="email" id="signupEmail" name="email" placeholder="Enter your email" required autocomplete="email">
-                    <i class="fas fa-envelope input-icon"></i>
-                </div>
-                
-                <div class="form-group password-group">
-                    <label for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" name="password" placeholder="Create a strong password" required minlength="8" autocomplete="new-password">
-                    <i class="fas fa-lock input-icon"></i>
-                    <div class="password-strength">
-                        <div class="strength-bar"></div>
-                    </div>
-                    <div class="password-requirements">
-                        <div class="requirement" id="req-length">
-                            <i class="fas fa-times"></i>
-                            <span>At least 8 characters</span>
-                        </div>
-                        <div class="requirement" id="req-uppercase">
-                            <i class="fas fa-times"></i>
-                            <span>One uppercase letter</span>
-                        </div>
-                        <div class="requirement" id="req-lowercase">
-                            <i class="fas fa-times"></i>
-                            <span>One lowercase letter</span>
-                        </div>
-                        <div class="requirement" id="req-number">
-                            <i class="fas fa-times"></i>
-                            <span>One number</span>
-                        </div>
-                    </div>
-                </div>
+          <div class="form-group">
+            <label for="signupConfirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="signupConfirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              required
+              minlength="8"
+              autocomplete="new-password"
+            />
+            <i class="fas fa-lock input-icon"></i>
+          </div>
 
-                <div class="form-group">
-                    <label for="signupConfirmPassword">Confirm Password</label>
-                    <input type="password" id="signupConfirmPassword" name="confirmPassword" placeholder="Confirm your password" required minlength="8" autocomplete="new-password">
-                    <i class="fas fa-lock input-icon"></i>
-                </div>
+          <button type="submit" class="auth-btn">
+            <div class="btn-content">
+              <span class="btn-text">Create Account</span>
+              <div class="loading-spinner"></div>
+            </div>
+          </button>
 
-                <button type="submit" class="auth-btn">
-                    <div class="btn-content">
-                        <span class="btn-text">Create Account</span>
-                        <div class="loading-spinner"></div>
-                    </div>
-                </button>
-                
-                <div class="message" id="signupMessage"></div>
-                
-                <div class="auth-link">
-                    Already have an account? <a href="#" onclick="switchToLogin()">Sign In</a>
-                </div>
-            </form>
-        </div>
+          <div class="message" id="signupMessage"></div>
+
+          <div class="auth-link">
+            Already have an account?
+            <a href="#" onclick="switchToLogin()">Sign In</a>
+          </div>
+        </form>
+      </div>
     </div>
 
     <script src="script.js"></script>
     <script>
-        // Check authentication status on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const user = JSON.parse(localStorage.getItem('user'));
-            updateAuthUI(user);
-        });
+      // Check authentication status on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        updateAuthUI(user);
+      });
 
-        // Update UI based on authentication status
-        function updateAuthUI(user) {
-            // Desktop auth elements
-            const loginBtn = document.getElementById('login-btn');
-            const signupBtn = document.getElementById('signup-btn');
-            const userMenu = document.getElementById('user-menu');
-            const userDisplayName = document.getElementById('user-display-name');
-            const logoutBtn = document.getElementById('logout-btn');
-            
-            // Mobile auth elements
-            const mobileAuth = document.querySelector('.mobile-auth');
-            const mobileUserMenu = document.getElementById('mobile-user-menu');
-            const mobileUserName = document.getElementById('mobile-user-name');
-            const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+      // Update UI based on authentication status
+      function updateAuthUI(user) {
+        // Desktop auth elements
+        const loginBtn = document.getElementById("login-btn");
+        const signupBtn = document.getElementById("signup-btn");
+        const userMenu = document.getElementById("user-menu");
+        const userDisplayName = document.getElementById("user-display-name");
+        const logoutBtn = document.getElementById("logout-btn");
 
-            if (user) {
-                // Desktop
-                if (loginBtn) loginBtn.classList.add('hidden');
-                if (signupBtn) signupBtn.classList.add('hidden');
-                if (userMenu) userMenu.classList.remove('hidden');
-                if (userDisplayName) userDisplayName.textContent = user.name;
-                
-                // Mobile
-                if (mobileAuth) {
-                    mobileAuth.innerHTML = `
+        // Mobile auth elements
+        const mobileAuth = document.querySelector(".mobile-auth");
+        const mobileUserMenu = document.getElementById("mobile-user-menu");
+        const mobileUserName = document.getElementById("mobile-user-name");
+        const mobileLogoutBtn = document.getElementById("mobile-logout-btn");
+
+        if (user) {
+          // Desktop
+          if (loginBtn) loginBtn.classList.add("hidden");
+          if (signupBtn) signupBtn.classList.add("hidden");
+          if (userMenu) userMenu.classList.remove("hidden");
+          if (userDisplayName) userDisplayName.textContent = user.name;
+
+          // Mobile
+          if (mobileAuth) {
+            mobileAuth.innerHTML = `
                         <div class="mobile-user-menu" id="mobile-user-menu">
                             <div class="mobile-user-info">
                                 <i class="fas fa-user-circle"></i>
@@ -657,21 +838,22 @@
                             </button>
                         </div>
                     `;
-                    // Re-attach event listener for mobile logout
-                    const newMobileLogoutBtn = document.getElementById('mobile-logout-btn');
-                    if (newMobileLogoutBtn) {
-                        newMobileLogoutBtn.addEventListener('click', handleLogout);
-                    }
-                }
-            } else {
-                // Desktop
-                if (loginBtn) loginBtn.classList.remove('hidden');
-                if (signupBtn) signupBtn.classList.remove('hidden');
-                if (userMenu) userMenu.classList.add('hidden');
-                
-                // Mobile
-                if (mobileAuth) {
-                    mobileAuth.innerHTML = `
+            // Re-attach event listener for mobile logout
+            const newMobileLogoutBtn =
+              document.getElementById("mobile-logout-btn");
+            if (newMobileLogoutBtn) {
+              newMobileLogoutBtn.addEventListener("click", handleLogout);
+            }
+          }
+        } else {
+          // Desktop
+          if (loginBtn) loginBtn.classList.remove("hidden");
+          if (signupBtn) signupBtn.classList.remove("hidden");
+          if (userMenu) userMenu.classList.add("hidden");
+
+          // Mobile
+          if (mobileAuth) {
+            mobileAuth.innerHTML = `
                         <button class="mobile-btn-login" onclick="showLoginModal()">
                             <i class="fas fa-sign-in-alt"></i>
                             <span>Login</span>
@@ -681,34 +863,34 @@
                             <span>Sign Up</span>
                         </button>
                     `;
-                }
-            }
-            
-            // Reload daily actions to update authentication state
-            if (typeof loadDailyActions === 'function') {
-                loadDailyActions();
-            }
+          }
         }
 
-        // Handle logout for both desktop and mobile
-        function handleLogout(e) {
-            e.preventDefault();
-            logout();
+        // Reload daily actions to update authentication state
+        if (typeof loadDailyActions === "function") {
+          loadDailyActions();
         }
-        
-        async function logout() {
-            try {
-                const response = await fetch('/api/auth/logout', {
-                    method: 'POST',
-                    credentials: 'include'
-                });
+      }
 
-                if (response.ok) {
-                    localStorage.removeItem('user');
-                    updateAuthUI(null);
-                    // Show success message
-                    const successDiv = document.createElement('div');
-                    successDiv.style.cssText = `
+      // Handle logout for both desktop and mobile
+      function handleLogout(e) {
+        e.preventDefault();
+        logout();
+      }
+
+      async function logout() {
+        try {
+          const response = await fetch("/api/auth/logout", {
+            method: "POST",
+            credentials: "include",
+          });
+
+          if (response.ok) {
+            localStorage.removeItem("user");
+            updateAuthUI(null);
+            // Show success message
+            const successDiv = document.createElement("div");
+            successDiv.style.cssText = `
                         position: fixed;
                         top: 20px;
                         right: 20px;
@@ -720,117 +902,120 @@
                         box-shadow: 0 8px 25px rgba(81, 207, 102, 0.3);
                         animation: slideInRight 0.5s ease-out;
                     `;
-                    successDiv.innerHTML = '✅ Logged out successfully!';
-                    document.body.appendChild(successDiv);
-                    
-                    setTimeout(() => {
-                        successDiv.remove();
-                    }, 3000);
-                }
-            } catch (error) {
-                console.error('Logout failed:', error);
-            }
-        }
-        
-        // Desktop logout button
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', handleLogout);
-        }
-        
-        // Enhanced Mobile menu toggle
-        function setupMobileMenu() {
-            const mobileToggle = document.getElementById('mobile-toggle');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            console.log('Setting up mobile menu:', { mobileToggle, mobileMenu });
-            
-            if (mobileToggle && mobileMenu) {
-                // Remove any existing event listeners
-                mobileToggle.replaceWith(mobileToggle.cloneNode(true));
-                const newMobileToggle = document.getElementById('mobile-toggle');
-                
-                // Toggle mobile menu
-                newMobileToggle.addEventListener('click', (e) => {
-                    console.log('Mobile toggle clicked');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const isActive = newMobileToggle.classList.contains('active');
-                    
-                    if (isActive) {
-                        newMobileToggle.classList.remove('active');
-                        mobileMenu.classList.remove('active');
-                        newMobileToggle.setAttribute('aria-expanded', 'false');
-                        document.body.style.overflow = '';
-                    } else {
-                        newMobileToggle.classList.add('active');
-                        mobileMenu.classList.add('active');
-                        newMobileToggle.setAttribute('aria-expanded', 'true');
-                        document.body.style.overflow = 'hidden';
-                    }
-                });
+            successDiv.innerHTML = "✅ Logged out successfully!";
+            document.body.appendChild(successDiv);
 
-                // Close mobile menu when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!mobileMenu.contains(e.target) && !newMobileToggle.contains(e.target)) {
-                        newMobileToggle.classList.remove('active');
-                        mobileMenu.classList.remove('active');
-                        newMobileToggle.setAttribute('aria-expanded', 'false');
-                        document.body.style.overflow = '';
-                    }
-                });
+            setTimeout(() => {
+              successDiv.remove();
+            }, 3000);
+          }
+        } catch (error) {
+          console.error("Logout failed:", error);
+        }
+      }
 
-                // Close mobile menu on escape key
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-                        newMobileToggle.classList.remove('active');
-                        mobileMenu.classList.remove('active');
-                        newMobileToggle.setAttribute('aria-expanded', 'false');
-                        document.body.style.overflow = '';
-                    }
-                });
-                
-                console.log('Mobile menu setup complete');
+      // Desktop logout button
+      const logoutBtn = document.getElementById("logout-btn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", handleLogout);
+      }
+
+      // Enhanced Mobile menu toggle
+      function setupMobileMenu() {
+        const mobileToggle = document.getElementById("mobile-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        console.log("Setting up mobile menu:", { mobileToggle, mobileMenu });
+
+        if (mobileToggle && mobileMenu) {
+          // Remove any existing event listeners
+          mobileToggle.replaceWith(mobileToggle.cloneNode(true));
+          const newMobileToggle = document.getElementById("mobile-toggle");
+
+          // Toggle mobile menu
+          newMobileToggle.addEventListener("click", (e) => {
+            console.log("Mobile toggle clicked");
+            e.preventDefault();
+            e.stopPropagation();
+
+            const isActive = newMobileToggle.classList.contains("active");
+
+            if (isActive) {
+              newMobileToggle.classList.remove("active");
+              mobileMenu.classList.remove("active");
+              newMobileToggle.setAttribute("aria-expanded", "false");
+              document.body.style.overflow = "";
             } else {
-                console.error('Mobile menu elements not found');
+              newMobileToggle.classList.add("active");
+              mobileMenu.classList.add("active");
+              newMobileToggle.setAttribute("aria-expanded", "true");
+              document.body.style.overflow = "hidden";
             }
+          });
+
+          // Close mobile menu when clicking outside
+          document.addEventListener("click", (e) => {
+            if (
+              !mobileMenu.contains(e.target) &&
+              !newMobileToggle.contains(e.target)
+            ) {
+              newMobileToggle.classList.remove("active");
+              mobileMenu.classList.remove("active");
+              newMobileToggle.setAttribute("aria-expanded", "false");
+              document.body.style.overflow = "";
+            }
+          });
+
+          // Close mobile menu on escape key
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && mobileMenu.classList.contains("active")) {
+              newMobileToggle.classList.remove("active");
+              mobileMenu.classList.remove("active");
+              newMobileToggle.setAttribute("aria-expanded", "false");
+              document.body.style.overflow = "";
+            }
+          });
+
+          console.log("Mobile menu setup complete");
+        } else {
+          console.error("Mobile menu elements not found");
         }
-        
-        // Call the setup function
-        setupMobileMenu();
-        
-        // Close mobile menu when clicking nav items
-        document.querySelectorAll('.mobile-nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const mobileToggle = document.getElementById('mobile-toggle');
-                const mobileMenu = document.getElementById('mobile-menu');
-                if (mobileToggle && mobileMenu) {
-                    mobileToggle.classList.remove('active');
-                    mobileMenu.classList.remove('active');
-                    mobileToggle.setAttribute('aria-expanded', 'false');
-                    document.body.style.overflow = '';
-                }
-            });
-        });
+      }
 
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                const mobileToggle = document.getElementById('mobile-toggle');
-                const mobileMenu = document.getElementById('mobile-menu');
-                if (mobileToggle && mobileMenu) {
-                    mobileToggle.classList.remove('active');
-                    mobileMenu.classList.remove('active');
-                    mobileToggle.setAttribute('aria-expanded', 'false');
-                    document.body.style.overflow = '';
-                }
-            }
-        });
+      // Call the setup function
+      setupMobileMenu();
 
-        // Add slide in animation
-        const logoutStyle = document.createElement('style');
-        logoutStyle.textContent = `
+      // Close mobile menu when clicking nav items
+      document.querySelectorAll(".mobile-nav-item").forEach((item) => {
+        item.addEventListener("click", () => {
+          const mobileToggle = document.getElementById("mobile-toggle");
+          const mobileMenu = document.getElementById("mobile-menu");
+          if (mobileToggle && mobileMenu) {
+            mobileToggle.classList.remove("active");
+            mobileMenu.classList.remove("active");
+            mobileToggle.setAttribute("aria-expanded", "false");
+            document.body.style.overflow = "";
+          }
+        });
+      });
+
+      // Handle window resize
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 768) {
+          const mobileToggle = document.getElementById("mobile-toggle");
+          const mobileMenu = document.getElementById("mobile-menu");
+          if (mobileToggle && mobileMenu) {
+            mobileToggle.classList.remove("active");
+            mobileMenu.classList.remove("active");
+            mobileToggle.setAttribute("aria-expanded", "false");
+            document.body.style.overflow = "";
+          }
+        }
+      });
+
+      // Add slide in animation
+      const logoutStyle = document.createElement("style");
+      logoutStyle.textContent = `
             @keyframes slideInRight {
                 from {
                     transform: translateX(100%);
@@ -842,7 +1027,7 @@
                 }
             }
         `;
-        document.head.appendChild(logoutStyle);
+      document.head.appendChild(logoutStyle);
     </script>
-</body>
-</html> 
+  </body>
+</html>
