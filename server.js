@@ -26,19 +26,68 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.static("public"));
 
-// Connect to MongoDB
-mongoose
-  .connect(
-    process.env.MONGODB_URI || "mongodb://localhost:27017/climate-guardian"
-  )
-  .then(() => {
+// Validate required environment variables
+if (!process.env.JWT_SECRET) {
+  console.error("❌ CRITICAL: JWT_SECRET environment variable is required!");
+  console.error("💡 Generate one with: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\"");
+  process.exit(1);
+}
+
+// Configure mongoose for better connection handling
+mongoose.set('strictQuery', false);
+
+// Connect to MongoDB with retry logic and connection event handling
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(
+      process.env.MONGODB_URI || "mongodb://localhost:27017/climate-guardian",
+      {
+        // Connection options for better stability
+        maxPoolSize: 10, // Maintain up to 10 socket connections
+        serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+        socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+        bufferCommands: false, // Disable mongoose buffering
+        bufferMaxEntries: 0 // Disable mongoose buffering
+      }
+    );
+    
     console.log("📦 Connected to MongoDB");
-    console.log("🔗 MongoDB URI:", process.env.MONGODB_URI ? "Set" : "Not set");
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
+    console.log("🔗 MongoDB URI:", process.env.MONGODB_URI ? "Set" : "Using local MongoDB");
+    console.log("🏠 Database Host:", conn.connection.host);
+    
+  } catch (error) {
+    console.error("❌ MongoDB connection error:", error.message);
     console.error("🔗 MongoDB URI:", process.env.MONGODB_URI ? "Set but invalid" : "Not set");
-  });
+    
+    // Retry connection after 5 seconds
+    console.log("🔄 Retrying connection in 5 seconds...");
+    setTimeout(connectDB, 5000);
+  }
+};
+
+// MongoDB connection event handlers
+mongoose.connection.on('connected', () => {
+  console.log('✅ Mongoose connected to MongoDB');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error('❌ Mongoose connection error:', err.message);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('⚠️  Mongoose disconnected from MongoDB');
+  console.log('🔄 Attempting to reconnect...');
+});
+
+// Handle app termination
+process.on('SIGINT', async () => {
+  await mongoose.connection.close();
+  console.log('📦 MongoDB connection closed.');
+  process.exit(0);
+});
+
+// Initial connection
+connectDB();
 
 // Import routes
 const authRoutes = require("./api/auth");

@@ -1304,7 +1304,16 @@ function initializeAuthEvents() {
           createLoginParticles();
         }, 1000);
       } else {
-        showMessage('loginMessage', data.message || 'Login failed. Please check your credentials.', 'error');
+        // Handle specific error codes from backend
+        let errorMessage = data.message || 'Login failed. Please check your credentials.';
+        
+        if (data.code === 'DB_CONNECTION_ERROR' || data.code === 'DB_NETWORK_ERROR') {
+          errorMessage = 'Database connection issue. Please try again in a moment.';
+        } else if (data.code === 'JWT_CONFIG_ERROR') {
+          errorMessage = 'Authentication service error. Please contact support.';
+        }
+        
+        showMessage('loginMessage', errorMessage, 'error');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -1379,7 +1388,16 @@ function initializeAuthEvents() {
           createSignupParticles();
         }, 1500);
       } else {
-        showMessage('signupMessage', data.message || 'Account creation failed. Please try again.', 'error');
+        // Handle specific error codes from backend
+        let errorMessage = data.message || 'Account creation failed. Please try again.';
+        
+        if (data.code === 'DB_CONNECTION_ERROR' || data.code === 'DB_NETWORK_ERROR') {
+          errorMessage = 'Database connection issue. Please try again in a moment.';
+        } else if (data.code === 'JWT_CONFIG_ERROR') {
+          errorMessage = 'Authentication service error. Please contact support.';
+        }
+        
+        showMessage('signupMessage', errorMessage, 'error');
       }
     } catch (error) {
       console.error('Signup error:', error);
