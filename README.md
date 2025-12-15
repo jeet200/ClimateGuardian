@@ -103,11 +103,25 @@ A stunning, futuristic web platform that helps users understand and reduce their
    ```
 
 3. **Set up environment variables**
-   Create a `.env` file in the root directory:
+   Create a `.env` file in the root directory (or configure them in Vercel):
 
    ```env
+   # Server
+   PORT=5000
+   NODE_ENV=development
+
+   # Database (required for auth)
+   MONGODB_URI=your_mongodb_connection_string
+
+   # Authentication
+   JWT_SECRET=your_generated_secret
+
+   # APIs (optional but recommended)
    GEMINI_API_KEY=your_gemini_api_key_here
    OPENWEATHER_API_KEY=your_openweathermap_api_key_here
+
+   # Frontend (production CORS origin)
+   FRONTEND_URL=https://your-frontend-domain
    ```
 
 4. **Start development server**
