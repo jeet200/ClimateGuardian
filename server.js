@@ -33,22 +33,14 @@ if (!process.env.JWT_SECRET) {
   process.exit(1);
 }
 
-// In production we must have a remote MongoDB URI configured
-if (process.env.NODE_ENV === "production" && !process.env.MONGODB_URI) {
-  console.error("❌ CRITICAL: MONGODB_URI is required in production to connect to the database.");
-  console.error("💡 Add a MongoDB Atlas connection string to your environment variables.");
-  process.exit(1);
-}
-
 // Configure mongoose for better connection handling
 mongoose.set('strictQuery', false);
 
 // Connect to MongoDB with retry logic and connection event handling
 const connectDB = async () => {
   try {
-    const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/climate-guardian";
     const conn = await mongoose.connect(
-      mongoUri,
+      process.env.MONGODB_URI || "mongodb://localhost:27017/climate-guardian",
       {
         // Connection options for better stability
         maxPoolSize: 10, // Maintain up to 10 socket connections
@@ -60,7 +52,7 @@ const connectDB = async () => {
     );
     
     console.log("📦 Connected to MongoDB");
-    console.log("🔗 MongoDB URI:", process.env.MONGODB_URI ? "Set" : mongoUri);
+    console.log("🔗 MongoDB URI:", process.env.MONGODB_URI ? "Set" : "Using local MongoDB");
     console.log("🏠 Database Host:", conn.connection.host);
     
   } catch (error) {
