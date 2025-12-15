@@ -12,13 +12,14 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin: process.env.NODE_ENV === "production" 
-      ? [
-          process.env.FRONTEND_URL,
-          /^https:\/\/.*\.vercel\.app$/,
-          /^https:\/\/climate-project-.*\.vercel\.app$/
-        ]
-      : ["http://localhost:5000", "http://localhost:3000"],
+    origin:
+      process.env.NODE_ENV === "production"
+        ? [
+            process.env.FRONTEND_URL,
+            /^https:\/\/.*\.vercel\.app$/,
+            /^https:\/\/climate-project-.*\.vercel\.app$/,
+          ]
+        : ["http://localhost:5000", "http://localhost:3000"],
     credentials: true,
   })
 );
@@ -29,12 +30,14 @@ app.use(express.static("public"));
 // Validate required environment variables
 if (!process.env.JWT_SECRET) {
   console.error("❌ CRITICAL: JWT_SECRET environment variable is required!");
-  console.error("💡 Generate one with: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\"");
+  console.error(
+    "💡 Generate one with: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
+  );
   process.exit(1);
 }
 
 // Configure mongoose for better connection handling
-mongoose.set('strictQuery', false);
+mongoose.set("strictQuery", false);
 
 // Connect to MongoDB with retry logic and connection event handling
 const connectDB = async () => {
@@ -47,18 +50,22 @@ const connectDB = async () => {
         serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
         socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
         bufferCommands: false, // Disable mongoose buffering
-        bufferMaxEntries: 0 // Disable mongoose buffering
       }
     );
-    
+
     console.log("📦 Connected to MongoDB");
-    console.log("🔗 MongoDB URI:", process.env.MONGODB_URI ? "Set" : "Using local MongoDB");
+    console.log(
+      "🔗 MongoDB URI:",
+      process.env.MONGODB_URI ? "Set" : "Using local MongoDB"
+    );
     console.log("🏠 Database Host:", conn.connection.host);
-    
   } catch (error) {
     console.error("❌ MongoDB connection error:", error.message);
-    console.error("🔗 MongoDB URI:", process.env.MONGODB_URI ? "Set but invalid" : "Not set");
-    
+    console.error(
+      "🔗 MongoDB URI:",
+      process.env.MONGODB_URI ? "Set but invalid" : "Not set"
+    );
+
     // Retry connection after 5 seconds
     console.log("🔄 Retrying connection in 5 seconds...");
     setTimeout(connectDB, 5000);
@@ -66,23 +73,23 @@ const connectDB = async () => {
 };
 
 // MongoDB connection event handlers
-mongoose.connection.on('connected', () => {
-  console.log('✅ Mongoose connected to MongoDB');
+mongoose.connection.on("connected", () => {
+  console.log("✅ Mongoose connected to MongoDB");
 });
 
-mongoose.connection.on('error', (err) => {
-  console.error('❌ Mongoose connection error:', err.message);
+mongoose.connection.on("error", (err) => {
+  console.error("❌ Mongoose connection error:", err.message);
 });
 
-mongoose.connection.on('disconnected', () => {
-  console.log('⚠️  Mongoose disconnected from MongoDB');
-  console.log('🔄 Attempting to reconnect...');
+mongoose.connection.on("disconnected", () => {
+  console.log("⚠️  Mongoose disconnected from MongoDB");
+  console.log("🔄 Attempting to reconnect...");
 });
 
 // Handle app termination
-process.on('SIGINT', async () => {
+process.on("SIGINT", async () => {
   await mongoose.connection.close();
-  console.log('📦 MongoDB connection closed.');
+  console.log("📦 MongoDB connection closed.");
   process.exit(0);
 });
 
@@ -156,13 +163,14 @@ app.get("/api/health", (req, res) => {
     status: "OK",
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || "development",
-    mongodb: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    mongodb:
+      mongoose.connection.readyState === 1 ? "connected" : "disconnected",
     env_vars: {
       MONGODB_URI: !!process.env.MONGODB_URI,
       JWT_SECRET: !!process.env.JWT_SECRET,
       GEMINI_API_KEY: !!process.env.GEMINI_API_KEY,
-      OPENWEATHER_API_KEY: !!process.env.OPENWEATHER_API_KEY
-    }
+      OPENWEATHER_API_KEY: !!process.env.OPENWEATHER_API_KEY,
+    },
   });
 });
 
